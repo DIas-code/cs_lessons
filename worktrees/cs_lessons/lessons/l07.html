@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L07 — Methods | C# + .NET MAUI</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-page="l07" data-root="../">
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside id="sidebar" class="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="content">
+
+      <div class="lesson-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Course</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Part 1 — C# Basics</span>
+        </div>
+        <span class="part-badge p1">Part 1 — C# Basics</span>
+        <h1>L07 — Methods</h1>
+        <div class="lesson-meta-row">
+          <span class="lesson-date">20 March 2026 &middot; Friday &middot; 80 min</span>
+          <span class="status-badge done">Done</span>
+        </div>
+        <p class="lesson-desc">
+          Methods are named, reusable blocks of code. They are the most important tool for
+          structuring a program — breaking it into smaller, focused, testable pieces.
+          We cover declaration, parameters, return values, overloading, and scope.
+        </p>
+      </div>
+
+      <!-- OBJECTIVES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-objectives"><span class="section-icon">🎯</span> Learning Objectives</h2>
+        <ul class="objectives-list">
+          <li>Declare and call methods with and without parameters</li>
+          <li>Distinguish between <code>void</code> methods and methods that return a value</li>
+          <li>Use <code>return</code> to send a value back to the caller</li>
+          <li>Define methods with default parameter values and call them with named arguments</li>
+          <li>Overload methods (same name, different parameter lists)</li>
+          <li>Understand variable scope — local variables vs. method parameters</li>
+          <li>Pass arrays to methods and understand reference vs. value semantics</li>
+        </ul>
+      </div>
+
+      <!-- THEORY -->
+      <div class="lesson-section">
+        <h2 class="section-title s-theory"><span class="section-icon">📖</span> Theory</h2>
+        <div class="theory-content">
+
+          <h3>1. Why Methods?</h3>
+          <p>Without methods, code is a giant sequential block that is impossible to read, debug, or reuse. Methods let you:</p>
+          <ul>
+            <li><strong>Name</strong> a piece of logic — the name documents intent</li>
+            <li><strong>Reuse</strong> it — call it many times without copying code</li>
+            <li><strong>Test</strong> it in isolation — a method with clear inputs and outputs is easy to verify</li>
+            <li><strong>Hide details</strong> — the caller doesn't need to know how it works, only what it does</li>
+          </ul>
+
+          <div class="info-box tip">
+            <strong>Single Responsibility Principle (preview).</strong>
+            A good method does exactly one thing and does it well.
+            If you find yourself writing a method called <code>ReadInputAndCalculateAndPrint()</code>,
+            split it into three separate methods.
+          </div>
+
+          <h3>2. Method Declaration Syntax</h3>
+          <p>The full syntax of a method declaration:</p>
+          <div class="code-block">
+            <div class="code-block-header"><span class="code-lang">Syntax</span></div>
+            <pre><code><span class="cmt">// [access] [modifiers] returnType MethodName([parameters])</span>
+<span class="cmt">// {</span>
+<span class="cmt">//     body</span>
+<span class="cmt">//     return value;   ← required if returnType is not void</span>
+<span class="cmt">// }</span>
+
+<span class="kw">static</span> <span class="kw">int</span> <span class="met">Add</span>(<span class="kw">int</span> <span class="vr">a</span>, <span class="kw">int</span> <span class="vr">b</span>)
+<span class="pun">{</span>
+    <span class="kw2">return</span> <span class="vr">a</span> + <span class="vr">b</span>;
+<span class="pun">}</span></code></pre>
+          </div>
+          <ul>
+            <li><strong><code>static</code></strong> — for now, all our methods are static (called on the class, not an object). This changes when we learn OOP.</li>
+            <li><strong>Return type</strong> — the type of value the method sends back. Use <code>void</code> if it returns nothing.</li>
+            <li><strong>Method name</strong> — PascalCase by convention: <code>CalculateArea</code>, <code>PrintResult</code>, <code>GetMaxValue</code></li>
+            <li><strong>Parameters</strong> — comma-separated list of <code>type name</code> pairs, or empty <code>()</code></li>
+          </ul>
+
+          <h3>3. Parameters vs. Arguments</h3>
+          <p>These two terms are often confused:</p>
+          <ul>
+            <li><strong>Parameter</strong> — the variable declared in the method signature: <code>int a, int b</code></li>
+            <li><strong>Argument</strong> — the actual value passed when the method is called: <code>Add(3, 7)</code></li>
+          </ul>
+
+          <h3>4. The <code>return</code> Statement</h3>
+          <ul>
+            <li>Returns a value from the method to the caller. The value must match the declared return type.</li>
+            <li>Immediately exits the method — any code after <code>return</code> in the same path is unreachable.</li>
+            <li>A <code>void</code> method can use bare <code>return;</code> to exit early (optional at the end).</li>
+            <li>A method can have multiple <code>return</code> statements (e.g., one per branch in an <code>if/else</code>).</li>
+          </ul>
+
+          <h3>5. Default Parameter Values</h3>
+          <p>
+            Parameters can have default values. If the caller does not provide an argument for that parameter,
+            the default is used. Default parameters must come <strong>after</strong> required parameters.
+          </p>
+          <p>Example: <code>static void Greet(string name, string greeting = "Hello")</code></p>
+          <p>Call as <code>Greet("Alice")</code> → uses default → "Hello, Alice!"</p>
+          <p>Call as <code>Greet("Alice", "Hi")</code> → overrides default → "Hi, Alice!"</p>
+
+          <h3>6. Named Arguments</h3>
+          <p>
+            When calling a method, you can name the arguments explicitly:
+            <code>Greet(greeting: "Hey", name: "Bob")</code>
+            This allows you to pass them in any order and makes the call self-documenting
+            for methods with many parameters.
+          </p>
+
+          <h3>7. Method Overloading</h3>
+          <p>
+            Multiple methods can share the same name as long as they have <strong>different parameter lists</strong>
+            (different number of parameters, or different types). The compiler picks the correct version based on
+            the arguments you pass. The return type alone does NOT distinguish overloads.
+          </p>
+          <p>Classic example: <code>Console.WriteLine()</code> is overloaded dozens of times — for <code>int</code>, <code>double</code>, <code>string</code>, <code>bool</code>, etc.</p>
+
+          <h3>8. Variable Scope</h3>
+          <p>
+            A variable declared inside a method is <strong>local</strong> to that method.
+            It does not exist outside of it — each call to the method gets its own fresh copy of local variables.
+          </p>
+          <ul>
+            <li>Parameters are local variables initialised by the caller's arguments</li>
+            <li>Two different methods can have variables with the same name — they are completely independent</li>
+            <li>Variables declared inside a block (<code>if</code>, <code>for</code>) are scoped to that block only</li>
+          </ul>
+
+          <h3>9. Passing Arrays to Methods</h3>
+          <p>
+            Arrays are reference types. When you pass an array to a method, you are passing a
+            <strong>reference</strong> to the same data in memory — not a copy.
+            This means modifications made to the array inside the method <strong>will affect</strong>
+            the original array in the caller.
+          </p>
+          <p>This is a key difference from value types like <code>int</code>, which are copied on pass.</p>
+
+          <h3>10. Expression-Bodied Methods (C# 6+)</h3>
+          <p>
+            For methods that consist of a single expression, you can use the <code>=&gt;</code> arrow syntax
+            to write them on one line. This is purely stylistic — identical in behaviour.
+          </p>
+          <p><code>static int Square(int n) =&gt; n * n;</code></p>
+
+        </div>
+      </div>
+
+      <!-- CODE EXAMPLES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-examples"><span class="section-icon">💻</span> Code Examples</h2>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — void Method and Return Method</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// void method — does something, returns nothing</span>
+<span class="kw">static</span> <span class="kw">void</span> <span class="met">PrintLine</span>(<span class="kw">string</span> <span class="vr">text</span>)
+<span class="pun">{</span>
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"→ "</span> + <span class="vr">text</span>);
+<span class="pun">}</span>
+
+<span class="cmt">// method with return value</span>
+<span class="kw">static</span> <span class="kw">double</span> <span class="met">CircleArea</span>(<span class="kw">double</span> <span class="vr">radius</span>)
+<span class="pun">{</span>
+    <span class="kw2">return</span> <span class="cls">Math</span>.<span class="vr">PI</span> * <span class="vr">radius</span> * <span class="vr">radius</span>;
+<span class="pun">}</span>
+
+<span class="cmt">// expression-bodied (same as above, one line)</span>
+<span class="kw">static</span> <span class="kw">int</span> <span class="met">Square</span>(<span class="kw">int</span> <span class="vr">n</span>) =&gt; <span class="vr">n</span> * <span class="vr">n</span>;
+
+<span class="cmt">// --- calling them ---</span>
+<span class="met">PrintLine</span>(<span class="str">"Hello!"</span>);                             <span class="cmt">// → Hello!</span>
+
+<span class="kw">double</span> <span class="vr">area</span> = <span class="met">CircleArea</span>(<span class="num">5.0</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Area: {</span><span class="vr">area</span><span class="str">:F2}"</span>);            <span class="cmt">// Area: 78.54</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="met">Square</span>(<span class="num">7</span>));                    <span class="cmt">// 49</span></code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Multiple return statements + early exit</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Method with multiple return paths</span>
+<span class="kw">static</span> <span class="kw">string</span> <span class="met">GetGrade</span>(<span class="kw">int</span> <span class="vr">score</span>)
+<span class="pun">{</span>
+    <span class="kw2">if</span> (<span class="vr">score</span> &lt; <span class="num">0</span> || <span class="vr">score</span> &gt; <span class="num">100</span>) <span class="kw2">return</span> <span class="str">"Invalid"</span>;
+    <span class="kw2">if</span> (<span class="vr">score</span> &gt;= <span class="num">90</span>) <span class="kw2">return</span> <span class="str">"A"</span>;
+    <span class="kw2">if</span> (<span class="vr">score</span> &gt;= <span class="num">75</span>) <span class="kw2">return</span> <span class="str">"B"</span>;
+    <span class="kw2">if</span> (<span class="vr">score</span> &gt;= <span class="num">60</span>) <span class="kw2">return</span> <span class="str">"C"</span>;
+    <span class="kw2">return</span> <span class="str">"F"</span>;
+<span class="pun">}</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="met">GetGrade</span>(<span class="num">93</span>));   <span class="cmt">// A</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="met">GetGrade</span>(<span class="num">55</span>));   <span class="cmt">// F</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="met">GetGrade</span>(<span class="num">-5</span>));   <span class="cmt">// Invalid</span></code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Default Parameters and Named Arguments</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="kw">static</span> <span class="kw">void</span> <span class="met">Greet</span>(<span class="kw">string</span> <span class="vr">name</span>, <span class="kw">string</span> <span class="vr">greeting</span> = <span class="str">"Hello"</span>, <span class="kw">bool</span> <span class="vr">shout</span> = <span class="kw">false</span>)
+<span class="pun">{</span>
+    <span class="kw">string</span> <span class="vr">msg</span> = <span class="str">$"{</span><span class="vr">greeting</span><span class="str">}, {</span><span class="vr">name</span><span class="str">}!"</span>;
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">shout</span> ? <span class="vr">msg</span>.<span class="met">ToUpper</span>() : <span class="vr">msg</span>);
+<span class="pun">}</span>
+
+<span class="met">Greet</span>(<span class="str">"Alice"</span>);                              <span class="cmt">// Hello, Alice!</span>
+<span class="met">Greet</span>(<span class="str">"Bob"</span>, <span class="str">"Hi"</span>);                         <span class="cmt">// Hi, Bob!</span>
+<span class="met">Greet</span>(<span class="str">"Carol"</span>, <span class="str">"Hey"</span>, <span class="kw">true</span>);               <span class="cmt">// HEY, CAROL!</span>
+
+<span class="cmt">// Named arguments — order doesn't matter</span>
+<span class="met">Greet</span>(<span class="vr">shout</span>: <span class="kw">true</span>, <span class="vr">name</span>: <span class="str">"Dave"</span>, <span class="vr">greeting</span>: <span class="str">"Yo"</span>);  <span class="cmt">// YO, DAVE!</span></code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Method Overloading</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Three overloads of Print — same name, different parameter types</span>
+<span class="kw">static</span> <span class="kw">void</span> <span class="met">Print</span>(<span class="kw">int</span> <span class="vr">value</span>)    =&gt; <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"int:    {</span><span class="vr">value</span><span class="str">}"</span>);
+<span class="kw">static</span> <span class="kw">void</span> <span class="met">Print</span>(<span class="kw">double</span> <span class="vr">value</span>) =&gt; <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"double: {</span><span class="vr">value</span><span class="str">}"</span>);
+<span class="kw">static</span> <span class="kw">void</span> <span class="met">Print</span>(<span class="kw">string</span> <span class="vr">value</span>) =&gt; <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"string: {</span><span class="vr">value</span><span class="str">}"</span>);
+<span class="kw">static</span> <span class="kw">void</span> <span class="met">Print</span>(<span class="kw">int</span> <span class="vr">a</span>, <span class="kw">int</span> <span class="vr">b</span>)  =&gt; <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"sum:    {</span><span class="vr">a</span> + <span class="vr">b</span><span class="str">}"</span>);
+
+<span class="cmt">// Compiler chooses the right overload automatically</span>
+<span class="met">Print</span>(<span class="num">42</span>);           <span class="cmt">// int:    42</span>
+<span class="met">Print</span>(<span class="num">3.14</span>);         <span class="cmt">// double: 3.14</span>
+<span class="met">Print</span>(<span class="str">"hello"</span>);      <span class="cmt">// string: hello</span>
+<span class="met">Print</span>(<span class="num">3</span>, <span class="num">7</span>);          <span class="cmt">// sum:    10</span></code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Passing Arrays (Reference Semantics)</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Arrays are passed by reference — changes inside affect the original</span>
+<span class="kw">static</span> <span class="kw">void</span> <span class="met">DoubleAll</span>(<span class="kw">int</span>[] <span class="vr">arr</span>)
+<span class="pun">{</span>
+    <span class="kw2">for</span> (<span class="kw">int</span> <span class="vr">i</span> = <span class="num">0</span>; <span class="vr">i</span> &lt; <span class="vr">arr</span>.<span class="vr">Length</span>; <span class="vr">i</span>++)
+        <span class="vr">arr</span>[<span class="vr">i</span>] *= <span class="num">2</span>;
+<span class="pun">}</span>
+
+<span class="kw">static</span> <span class="kw">int</span> <span class="met">Sum</span>(<span class="kw">int</span>[] <span class="vr">arr</span>)
+<span class="pun">{</span>
+    <span class="kw">int</span> <span class="vr">total</span> = <span class="num">0</span>;
+    <span class="kw2">foreach</span> (<span class="kw">int</span> <span class="vr">n</span> <span class="kw">in</span> <span class="vr">arr</span>) <span class="vr">total</span> += <span class="vr">n</span>;
+    <span class="kw2">return</span> <span class="vr">total</span>;
+<span class="pun">}</span>
+
+<span class="kw">int</span>[] <span class="vr">nums</span> = <span class="pun">{</span> <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span> <span class="pun">};</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Sum before: {</span><span class="met">Sum</span>(<span class="vr">nums</span>)<span class="str">}"</span>);   <span class="cmt">// 15</span>
+
+<span class="met">DoubleAll</span>(<span class="vr">nums</span>);   <span class="cmt">// modifies the ORIGINAL array</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Sum after:  {</span><span class="met">Sum</span>(<span class="vr">nums</span>)<span class="str">}"</span>);   <span class="cmt">// 30</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="kw">string</span>.<span class="met">Join</span>(<span class="str">", "</span>, <span class="vr">nums</span>));      <span class="cmt">// 2, 4, 6, 8, 10</span></code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Well-structured Program using Methods</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Top-level: read input, calculate, display</span>
+<span class="kw">int</span>[] <span class="vr">data</span> = <span class="met">ReadArray</span>(<span class="num">5</span>);
+<span class="met">PrintStats</span>(<span class="vr">data</span>);
+
+<span class="cmt">// ---- method definitions ----</span>
+
+<span class="kw">static</span> <span class="kw">int</span>[] <span class="met">ReadArray</span>(<span class="kw">int</span> <span class="vr">size</span>)
+<span class="pun">{</span>
+    <span class="kw">int</span>[] <span class="vr">arr</span> = <span class="kw">new</span> <span class="kw">int</span>[<span class="vr">size</span>];
+    <span class="kw2">for</span> (<span class="kw">int</span> <span class="vr">i</span> = <span class="num">0</span>; <span class="vr">i</span> &lt; <span class="vr">size</span>; <span class="vr">i</span>++)
+    <span class="pun">{</span>
+        <span class="cls">Console</span>.<span class="met">Write</span>(<span class="str">$"Enter number {</span><span class="vr">i</span> + <span class="num">1</span><span class="str">}: "</span>);
+        <span class="vr">arr</span>[<span class="vr">i</span>] = <span class="kw">int</span>.<span class="met">Parse</span>(<span class="cls">Console</span>.<span class="met">ReadLine</span>()!);
+    <span class="pun">}</span>
+    <span class="kw2">return</span> <span class="vr">arr</span>;
+<span class="pun">}</span>
+
+<span class="kw">static</span> <span class="kw">void</span> <span class="met">PrintStats</span>(<span class="kw">int</span>[] <span class="vr">arr</span>)
+<span class="pun">{</span>
+    <span class="kw">int</span> <span class="vr">sum</span> = <span class="num">0</span>, <span class="vr">min</span> = <span class="vr">arr</span>[<span class="num">0</span>], <span class="vr">max</span> = <span class="vr">arr</span>[<span class="num">0</span>];
+    <span class="kw2">foreach</span> (<span class="kw">int</span> <span class="vr">n</span> <span class="kw">in</span> <span class="vr">arr</span>)
+    <span class="pun">{</span>
+        <span class="vr">sum</span> += <span class="vr">n</span>;
+        <span class="kw2">if</span> (<span class="vr">n</span> &lt; <span class="vr">min</span>) <span class="vr">min</span> = <span class="vr">n</span>;
+        <span class="kw2">if</span> (<span class="vr">n</span> &gt; <span class="vr">max</span>) <span class="vr">max</span> = <span class="vr">n</span>;
+    <span class="pun">}</span>
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Sum={</span><span class="vr">sum</span><span class="str">}  Avg={</span>(<span class="kw">double</span>)<span class="vr">sum</span>/<span class="vr">arr</span>.<span class="vr">Length</span><span class="str">:F1}  Min={</span><span class="vr">min</span><span class="str">}  Max={</span><span class="vr">max</span><span class="str">}"</span>);
+<span class="pun">}</span></code></pre>
+        </div>
+      </div>
+
+      <!-- PRACTICE -->
+      <div class="lesson-section">
+        <h2 class="section-title s-practice"><span class="section-icon">✏️</span> Practice Tasks</h2>
+        <div class="task-list">
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 1</span>
+              <span class="task-title">Math Helper Methods</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>Write the following methods and test each one with at least two calls:</p>
+              <ul>
+                <li><code>static bool IsEven(int n)</code> — returns <code>true</code> if <code>n</code> is even</li>
+                <li><code>static int Factorial(int n)</code> — returns n! (n × n-1 × … × 1). Assume n ≥ 0.</li>
+                <li><code>static bool IsPrime(int n)</code> — returns <code>true</code> if <code>n</code> is a prime number</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 2</span>
+              <span class="task-title">Overloaded Area Method</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>Create overloads of a method named <code>Area</code>:</p>
+              <ul>
+                <li><code>static double Area(double radius)</code> — area of a circle</li>
+                <li><code>static double Area(double width, double height)</code> — area of a rectangle</li>
+                <li><code>static double Area(double a, double b, double c)</code> — area of a triangle using Heron's formula</li>
+              </ul>
+              <p style="margin-top:6px;">Call all three and print the results.</p>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 3</span>
+              <span class="task-title">Array Utilities</span>
+              <span class="difficulty medium">Medium</span>
+            </div>
+            <div class="task-body">
+              <p>Write three methods that work with <code>int[]</code>:</p>
+              <ul>
+                <li><code>static int[] FilterEven(int[] arr)</code> — returns a new array with only even numbers</li>
+                <li><code>static void Swap(int[] arr, int i, int j)</code> — swaps elements at index i and j</li>
+                <li><code>static bool Contains(int[] arr, int value)</code> — returns true if the value is found</li>
+              </ul>
+              <p style="margin-top:6px;">Demonstrate each method in the main program.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ASSIGNMENT -->
+      <div class="lesson-section">
+        <h2 class="section-title s-assignments"><span class="section-icon">📋</span> Assignment Given This Lesson</h2>
+        <div class="assignment-block">
+          <div>
+            <div class="assignment-name">Task 4 — Loops, Arrays &amp; Methods</div>
+            <div class="assignment-desc">Combined assignment covering all of Part 1 so far. Given today. Graded.</div>
+          </div>
+          <div class="points-badge">6 pts</div>
+        </div>
+        <div class="info-box note" style="margin-top:12px;">
+          <strong>Scope of Task 4:</strong>
+          The assignment requires combining loops, arrays, and methods into one program.
+          Students are expected to write at least 3 custom methods and use arrays as parameters/return values.
+        </div>
+      </div>
+
+      <!-- MISTAKES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-mistakes"><span class="section-icon">⚠️</span> Common Mistakes</h2>
+        <div class="mistakes-list">
+
+          <div class="mistake-item">
+            <div class="mistake-title">Calling a method without using its return value</div>
+            <div class="mistake-desc">
+              <code>GetGrade(85);</code> — this calls the method but throws away the result.
+              The method runs but nothing happens. You need to either store the result
+              (<code>string g = GetGrade(85);</code>) or use it directly (<code>Console.WriteLine(GetGrade(85));</code>).
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Thinking <code>int</code> arguments are shared with the caller</div>
+            <div class="mistake-desc">
+              Value types (<code>int</code>, <code>double</code>, <code>bool</code>) are <strong>copied</strong> when passed to a method.
+              Changing the parameter inside the method has <em>no effect</em> on the original variable.
+              Only arrays and objects (reference types) share the underlying data.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Method declared after the top-level call but not found</div>
+            <div class="mistake-desc">
+              In a top-level statements file, all <code>static</code> local methods must be declared
+              <em>after</em> the top-level code, not inside it. If you accidentally put a method
+              definition in the middle of executable code, you get a compile error. Keep all
+              method definitions at the bottom of the file, below all executable statements.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Overloads with the same signature — compile error</div>
+            <div class="mistake-desc">
+              <code>static int Add(int a, int b)</code> and <code>static double Add(int a, int b)</code>
+              will not compile — the parameter list is identical. Return type does not differentiate overloads.
+              The compiler cannot determine which one to call based only on the arguments.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- INSTRUCTOR NOTES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-instructor"><span class="section-icon">🎓</span> Instructor Notes</h2>
+        <div class="instructor-box">
+          <div class="instructor-label">⚡ Teaching tips</div>
+          <ul>
+            <li><strong>Refactor live.</strong> Start with a 30-line top-level program (read array, sort, print stats — all inline). Then say "Let's clean this up" and extract it into methods step by step. Students see the before/after and understand why methods exist.</li>
+            <li><strong>Demo array reference semantics clearly.</strong> Write <code>void AddOne(int n) { n++; }</code> and <code>void AddOneToAll(int[] arr) { ... }</code>, run both, show that the first changes nothing outside, the second does. This is a critical conceptual moment.</li>
+            <li><strong>Give Task 4 today — it is the most substantial Part 1 assignment.</strong> Walk through the requirements. Students who are struggling with Tasks 1–3 need to start immediately.</li>
+            <li><strong>Introduce the Single Responsibility idea early.</strong> Students who grasp it now write dramatically better code in the OOP section.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- NAV -->
+      <div class="lesson-nav">
+        <a href="l06.html" class="nav-btn">
+          <div><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">L06 — Arrays</span></div>
+        </a>
+        <a href="l08.html" class="nav-btn">
+          <div><span class="nav-btn-label">Next lesson →</span><span class="nav-btn-title">L08 — Arrays &amp; Methods Practice</span></div>
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <script src="../script.js"></script>
+</body>
+</html>

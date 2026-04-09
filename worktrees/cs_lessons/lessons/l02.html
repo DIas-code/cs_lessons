@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L02 — Variables, Constants, Data Types | C# + .NET MAUI</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-page="l02" data-root="../">
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside id="sidebar" class="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="content">
+
+      <!-- ===== LESSON HEADER ===== -->
+      <div class="lesson-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Course</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Part 1 — C# Basics</span>
+        </div>
+        <span class="part-badge p1">Part 1 — C# Basics</span>
+        <h1>L02 — Variables, Constants &amp; Data Types</h1>
+        <div class="lesson-meta-row">
+          <span class="lesson-date">13 February 2026 &middot; Friday &middot; 80 min</span>
+          <span class="status-badge done">Done</span>
+        </div>
+        <p class="lesson-desc">
+          We learn how to store data in a program using variables and constants.
+          We explore all the fundamental data types in C#, understand the difference
+          between value types and reference types, and practice type conversion.
+        </p>
+      </div>
+
+      <!-- ===== LEARNING OBJECTIVES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-objectives">
+          <span class="section-icon">🎯</span> Learning Objectives
+        </h2>
+        <ul class="objectives-list">
+          <li>Declare, initialize, and reassign variables using correct C# syntax</li>
+          <li>Name and use the most common C# data types: <code>int</code>, <code>double</code>, <code>decimal</code>, <code>bool</code>, <code>char</code>, <code>string</code></li>
+          <li>Explain the difference between value types and reference types</li>
+          <li>Declare constants with <code>const</code> and understand when to use them</li>
+          <li>Convert between types using implicit conversion, explicit cast, and the <code>Convert</code> class</li>
+          <li>Use <code>var</code> for local type inference and know when it is appropriate</li>
+        </ul>
+      </div>
+
+      <!-- ===== THEORY ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-theory">
+          <span class="section-icon">📖</span> Theory
+        </h2>
+
+        <div class="theory-content">
+
+          <h3>1. Variables</h3>
+          <p>
+            A <strong>variable</strong> is a named container in memory that stores a value.
+            Every variable has:
+          </p>
+          <ul>
+            <li>A <strong>type</strong> — defines what kind of data it holds</li>
+            <li>A <strong>name</strong> — how you refer to it in your code</li>
+            <li>A <strong>value</strong> — the data it currently holds</li>
+          </ul>
+
+          <p>The general syntax to declare a variable:</p>
+          <div class="code-block">
+            <div class="code-block-header">
+              <span class="code-lang">Syntax</span>
+            </div>
+            <pre><code><span class="cmt">// Declaration + initialization in one line (recommended)</span>
+<span class="cls">type</span> <span class="vr">variableName</span> = <span class="vr">value</span>;
+
+<span class="cmt">// Declaration first, then assignment later</span>
+<span class="cls">type</span> <span class="vr">variableName</span>;
+<span class="vr">variableName</span> = <span class="vr">value</span>;</code></pre>
+          </div>
+
+          <h4>Naming rules and conventions:</h4>
+          <ul>
+            <li>Must start with a letter or underscore (<code>_</code>), not a digit</li>
+            <li>Can contain letters, digits, underscores — no spaces or special characters</li>
+            <li>C# is case-sensitive: <code>age</code> and <code>Age</code> are different variables</li>
+            <li>By convention, local variables use <strong>camelCase</strong>: <code>firstName</code>, <code>totalPrice</code></li>
+            <li>Avoid single letters (except <code>i</code>, <code>j</code> in loops); use descriptive names</li>
+          </ul>
+
+          <div class="info-box tip">
+            <strong>Good naming = self-documenting code.</strong>
+            A variable named <code>n</code> tells you nothing. A variable named <code>studentCount</code>
+            tells you exactly what it holds. Write code that your future self (and teammates) can read.
+          </div>
+
+          <h3>2. C# Data Types</h3>
+          <p>
+            C# is a <strong>strongly typed</strong> language — every variable has a fixed type
+            that cannot change. The type determines: what values are valid, how much memory is used,
+            and what operations are allowed.
+          </p>
+
+          <h4>Integer types (whole numbers — no decimal part):</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Range</th>
+                <th>When to use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>byte</code></td>
+                <td>1 byte</td>
+                <td>0 to 255</td>
+                <td>Small positive integers, pixel values</td>
+              </tr>
+              <tr>
+                <td><code>short</code></td>
+                <td>2 bytes</td>
+                <td>−32,768 to 32,767</td>
+                <td>Rarely used; memory-critical contexts</td>
+              </tr>
+              <tr>
+                <td><code>int</code></td>
+                <td>4 bytes</td>
+                <td>−2.1 billion to 2.1 billion</td>
+                <td><strong>Default choice for integers</strong></td>
+              </tr>
+              <tr>
+                <td><code>long</code></td>
+                <td>8 bytes</td>
+                <td>≈ −9.2 × 10¹⁸ to 9.2 × 10¹⁸</td>
+                <td>Very large numbers (file sizes, IDs)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Floating-point types (numbers with a decimal point):</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Precision</th>
+                <th>When to use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>float</code></td>
+                <td>4 bytes</td>
+                <td>~7 digits</td>
+                <td>Graphics, game physics (append <code>f</code>: <code>3.14f</code>)</td>
+              </tr>
+              <tr>
+                <td><code>double</code></td>
+                <td>8 bytes</td>
+                <td>~15 digits</td>
+                <td><strong>Default for most decimal math</strong></td>
+              </tr>
+              <tr>
+                <td><code>decimal</code></td>
+                <td>16 bytes</td>
+                <td>28–29 digits</td>
+                <td><strong>Money, financial calculations</strong> (append <code>m</code>: <code>9.99m</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="info-box important">
+            <strong>Use <code>decimal</code> for money — always.</strong>
+            <code>float</code> and <code>double</code> use binary floating-point, which cannot
+            represent 0.1 exactly. Try <code>0.1f + 0.2f</code> — you get
+            <code>0.3000000119...</code>, not <code>0.3</code>. For financial calculations this
+            is unacceptable. <code>decimal</code> uses base-10 arithmetic and avoids this problem.
+          </div>
+
+          <h4>Other essential types:</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Example literals</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>bool</code></td>
+                <td>Boolean — true or false only</td>
+                <td><code>true</code>, <code>false</code></td>
+              </tr>
+              <tr>
+                <td><code>char</code></td>
+                <td>A single Unicode character</td>
+                <td><code>'A'</code>, <code>'z'</code>, <code>'5'</code>, <code>'!'</code> (single quotes)</td>
+              </tr>
+              <tr>
+                <td><code>string</code></td>
+                <td>A sequence of characters (text)</td>
+                <td><code>"Hello"</code>, <code>"Alice"</code>, <code>""</code> (double quotes)</td>
+              </tr>
+              <tr>
+                <td><code>object</code></td>
+                <td>Base type — can hold any value</td>
+                <td>Advanced; avoid for now</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>3. Value Types vs Reference Types</h3>
+          <p>This is one of the most important conceptual distinctions in C#:</p>
+
+          <h4>Value types</h4>
+          <p>
+            Store the <strong>data directly</strong> in the variable. When you assign one value-type
+            variable to another, a <strong>copy</strong> of the data is made. Changes to one do not
+            affect the other.
+          </p>
+          <p>
+            <em>Examples:</em> <code>int</code>, <code>double</code>, <code>decimal</code>,
+            <code>bool</code>, <code>char</code>, <code>float</code>, all <code>struct</code> types.
+          </p>
+
+          <h4>Reference types</h4>
+          <p>
+            Store a <strong>reference (pointer)</strong> to the data in memory. When you assign
+            one reference-type variable to another, both variables point to the <em>same object</em>.
+          </p>
+          <p>
+            <em>Examples:</em> <code>string</code>, arrays, classes, <code>object</code>.
+          </p>
+
+          <div class="info-box note">
+            <strong>Note on strings:</strong>
+            <code>string</code> is technically a reference type, but it behaves like a value type
+            in most situations because strings in C# are <em>immutable</em> — once created,
+            a string value cannot be changed. All string "modifications" create a new string.
+            You don't need to worry about this distinction now — it becomes important later.
+          </div>
+
+          <h3>4. Constants — <code>const</code></h3>
+          <p>
+            A <strong>constant</strong> is a variable whose value cannot change after it is set.
+            Use constants for values that are fixed by definition: mathematical constants, limits,
+            configuration values.
+          </p>
+          <ul>
+            <li><code>const</code> — value must be known at <strong>compile time</strong> (a literal or simple expression)</li>
+            <li>Naming convention: <code>PascalCase</code> for constants — <code>MaxScore</code>, <code>Pi</code></li>
+            <li>Attempting to change a <code>const</code> causes a <strong>compile error</strong> — not a runtime error</li>
+          </ul>
+
+          <div class="info-box tip">
+            <strong>When to use <code>const</code>:</strong> Mathematical constants (PI, E),
+            fixed limits (max attempts, array size), unit conversion factors, magic numbers that
+            appear more than once in your code. Using constants instead of raw numbers ("magic numbers")
+            makes your code much easier to read and maintain.
+          </div>
+
+          <h3>5. Type Inference with <code>var</code></h3>
+          <p>
+            C# can <strong>infer the type</strong> of a local variable from the assigned value.
+            The <code>var</code> keyword tells the compiler: <em>"you figure out the type."</em>
+          </p>
+          <p>
+            Important: <code>var</code> is still strongly typed — the type is fixed at compile time.
+            It is just shorthand to avoid writing the type explicitly when it is obvious.
+          </p>
+          <ul>
+            <li>Use <code>var</code> when the type is <em>obvious from the right side</em>: <code>var name = "Alice";</code></li>
+            <li>Prefer explicit types when clarity matters: <code>decimal price = 9.99m;</code></li>
+            <li>Never use <code>var</code> for a variable declared without initialisation</li>
+          </ul>
+
+          <h3>6. Type Conversion</h3>
+          <p>
+            Converting a value from one type to another is very common. C# provides several mechanisms:
+          </p>
+
+          <h4>Implicit conversion (automatic, no data loss)</h4>
+          <p>
+            The compiler allows it automatically when the destination type can hold all possible
+            values of the source type.
+          </p>
+          <ul>
+            <li><code>int → long → double</code> — all safe (larger range)</li>
+            <li><code>int → double</code> — safe: <code>int x = 5; double d = x;</code></li>
+          </ul>
+
+          <h4>Explicit cast (you force it, possible data loss)</h4>
+          <p>
+            When converting to a <em>smaller</em> or less precise type, you must explicitly
+            acknowledge the risk with a cast operator <code>(type)</code>.
+          </p>
+          <ul>
+            <li><code>double → int</code>: the decimal part is <strong>truncated</strong> (not rounded): <code>(int)3.9</code> → <code>3</code></li>
+            <li><code>long → int</code>: safe only if the value fits; otherwise, <strong>overflow</strong></li>
+          </ul>
+
+          <h4>Convert class — safe, readable conversions</h4>
+          <p>
+            The <code>Convert</code> class (from the BCL) provides methods for converting between types.
+            Unlike a cast, it <strong>rounds</strong> floating-point numbers instead of truncating.
+          </p>
+          <ul>
+            <li><code>Convert.ToInt32()</code>, <code>Convert.ToDouble()</code>, <code>Convert.ToString()</code></li>
+          </ul>
+
+          <h4>Parse and TryParse — from string to number</h4>
+          <p>
+            When you read user input (from the console), it is always a <code>string</code>.
+            To use it as a number you must <em>parse</em> it:
+          </p>
+          <ul>
+            <li><code>int.Parse("42")</code> — converts the string <code>"42"</code> to <code>int 42</code>. Throws an exception if the string is not a valid number.</li>
+            <li><code>int.TryParse("42", out int result)</code> — safer: returns <code>true</code>/<code>false</code> instead of throwing (covered more in later lessons).</li>
+          </ul>
+
+          <h3>7. Nullable Types</h3>
+          <p>
+            By default, value types (<code>int</code>, <code>double</code>, etc.) cannot hold <code>null</code>.
+            A <strong>nullable type</strong> is declared by appending <code>?</code> to the type name,
+            allowing it to also hold <code>null</code> (meaning "no value").
+          </p>
+          <p>Example: <code>int? score = null;</code> — useful when a value might be "unknown" or "not yet set".</p>
+
+        </div>
+      </div>
+
+      <!-- ===== CODE EXAMPLES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-examples">
+          <span class="section-icon">💻</span> Code Examples
+        </h2>
+
+        <!-- Example 1 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Declaring Variables</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// ---- Integer types ----</span>
+<span class="kw">int</span>    <span class="vr">age</span>           = <span class="num">21</span>;
+<span class="kw">long</span>   <span class="vr">population</span>    = <span class="num">8_000_000_000L</span>;   <span class="cmt">// L suffix = long literal; _ for readability</span>
+<span class="kw">byte</span>   <span class="vr">level</span>         = <span class="num">255</span>;
+
+<span class="cmt">// ---- Floating-point types ----</span>
+<span class="kw">float</span>   <span class="vr">temperature</span>  = <span class="num">36.6f</span>;            <span class="cmt">// f suffix required for float literals</span>
+<span class="kw">double</span>  <span class="vr">pi</span>           = <span class="num">3.14159265358979</span>;  <span class="cmt">// default for decimal literals</span>
+<span class="kw">decimal</span> <span class="vr">price</span>        = <span class="num">19.99m</span>;           <span class="cmt">// m suffix required for decimal literals</span>
+
+<span class="cmt">// ---- Other types ----</span>
+<span class="kw">bool</span>   <span class="vr">isStudent</span>     = <span class="kw">true</span>;
+<span class="kw">char</span>   <span class="vr">grade</span>         = <span class="str">'A'</span>;              <span class="cmt">// single quotes for char</span>
+<span class="kw">string</span> <span class="vr">name</span>          = <span class="str">"Alice"</span>;          <span class="cmt">// double quotes for string</span>
+
+<span class="cmt">// ---- Print them all ----</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Name: </span><span class="pun">{</span><span class="vr">name</span><span class="pun">}</span><span class="str">, Age: </span><span class="pun">{</span><span class="vr">age</span><span class="pun">}</span><span class="str">"</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Price: </span><span class="pun">{</span><span class="vr">price</span><span class="pun">}</span><span class="str"> | Is student: </span><span class="pun">{</span><span class="vr">isStudent</span><span class="pun">}</span><span class="str">"</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Grade: </span><span class="pun">{</span><span class="vr">grade</span><span class="pun">}</span><span class="str"> | Pi: </span><span class="pun">{</span><span class="vr">pi</span><span class="pun">}</span><span class="str">"</span>);</code></pre>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Constants</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Constants — value set once, never changed</span>
+<span class="kw">const</span> <span class="kw">double</span>  <span class="vr">Pi</span>          = <span class="num">3.14159265358979</span>;
+<span class="kw">const</span> <span class="kw">int</span>     <span class="vr">MaxAttempts</span> = <span class="num">3</span>;
+<span class="kw">const</span> <span class="kw">string</span>  <span class="vr">AppVersion</span>  = <span class="str">"1.0.0"</span>;
+
+<span class="kw">double</span> <span class="vr">radius</span> = <span class="num">5.0</span>;
+<span class="kw">double</span> <span class="vr">area</span>   = <span class="vr">Pi</span> * <span class="vr">radius</span> * <span class="vr">radius</span>;
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Circle area: </span><span class="pun">{</span><span class="vr">area</span><span class="pun">:</span><span class="str">F2</span><span class="pun">}</span><span class="str">"</span>);   <span class="cmt">// :F2 = 2 decimal places</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Max login attempts: </span><span class="pun">{</span><span class="vr">MaxAttempts</span><span class="pun">}</span><span class="str">"</span>);
+
+<span class="cmt">// This line would cause a COMPILE ERROR — you cannot change a const:</span>
+<span class="cmt">// Pi = 3.0;   ← Error: "The left-hand side of an assignment must be a variable"</span></code></pre>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — var (Type Inference)</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// var — compiler infers the type from the right-hand side</span>
+<span class="kw">var</span> <span class="vr">city</span>     = <span class="str">"Almaty"</span>;   <span class="cmt">// compiler infers: string</span>
+<span class="kw">var</span> <span class="vr">count</span>    = <span class="num">42</span>;         <span class="cmt">// compiler infers: int</span>
+<span class="kw">var</span> <span class="vr">ratio</span>    = <span class="num">0.75</span>;       <span class="cmt">// compiler infers: double</span>
+<span class="kw">var</span> <span class="vr">isActive</span> = <span class="kw">true</span>;       <span class="cmt">// compiler infers: bool</span>
+
+<span class="cmt">// Hover over the variable in Visual Studio to see what type was inferred</span>
+
+<span class="cmt">// These are IDENTICAL — var is just shorthand:</span>
+<span class="kw">string</span> <span class="vr">a</span> = <span class="str">"Hello"</span>;
+<span class="kw">var</span>    <span class="vr">b</span> = <span class="str">"Hello"</span>;   <span class="cmt">// same type: string</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{</span><span class="vr">city</span><span class="str">} | count: {</span><span class="vr">count</span><span class="str">} | ratio: {</span><span class="vr">ratio</span><span class="str">}"</span>);</code></pre>
+        </div>
+
+        <!-- Example 4 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Type Conversion</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// ---- Implicit conversion (safe, no data loss) ----</span>
+<span class="kw">int</span>    <span class="vr">myInt</span>    = <span class="num">100</span>;
+<span class="kw">double</span> <span class="vr">myDouble</span> = <span class="vr">myInt</span>;    <span class="cmt">// int → double automatically (100.0)</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">myDouble</span>); <span class="cmt">// 100</span>
+
+<span class="cmt">// ---- Explicit cast (forced, possible data loss) ----</span>
+<span class="kw">double</span> <span class="vr">d</span> = <span class="num">9.99</span>;
+<span class="kw">int</span>    <span class="vr">i</span> = <span class="pun">(</span><span class="kw">int</span><span class="pun">)</span><span class="vr">d</span>;          <span class="cmt">// Truncates! Result: 9  (NOT rounded)</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">i</span>);       <span class="cmt">// 9</span>
+
+<span class="cmt">// ---- Convert class (rounds, clearer intent) ----</span>
+<span class="kw">double</span> <span class="vr">price</span>   = <span class="num">9.99</span>;
+<span class="kw">int</span>    <span class="vr">rounded</span> = <span class="cls">Convert</span>.<span class="met">ToInt32</span>(<span class="vr">price</span>);  <span class="cmt">// Rounds to nearest: 10</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">rounded</span>);               <span class="cmt">// 10</span>
+
+<span class="cmt">// ---- Parse — string to number ----</span>
+<span class="kw">string</span> <span class="vr">input</span>  = <span class="str">"42"</span>;
+<span class="kw">int</span>    <span class="vr">number</span> = <span class="kw">int</span>.<span class="met">Parse</span>(<span class="vr">input</span>);   <span class="cmt">// "42" → 42</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">number</span> + <span class="num">8</span>);       <span class="cmt">// 50</span>
+
+<span class="cmt">// ---- number to string ----</span>
+<span class="kw">int</span>    <span class="vr">score</span> = <span class="num">95</span>;
+<span class="kw">string</span> <span class="vr">msg</span>   = <span class="str">"Score: "</span> + <span class="vr">score</span>;      <span class="cmt">// int auto-converts to string here</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">msg</span>);               <span class="cmt">// "Score: 95"</span></code></pre>
+        </div>
+
+        <!-- Example 5 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Floating-Point Precision Demo</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Demonstrating why decimal matters for money</span>
+
+<span class="kw">float</span>   <span class="vr">f1</span> = <span class="num">0.1f</span> + <span class="num">0.2f</span>;
+<span class="kw">double</span>  <span class="vr">d1</span> = <span class="num">0.1</span>  + <span class="num">0.2</span>;
+<span class="kw">decimal</span> <span class="vr">m1</span> = <span class="num">0.1m</span> + <span class="num">0.2m</span>;
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"float:   </span><span class="pun">{</span><span class="vr">f1</span><span class="pun">:</span><span class="str">R</span><span class="pun">}</span><span class="str">"</span>);   <span class="cmt">// 0.3000000119209290</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"double:  </span><span class="pun">{</span><span class="vr">d1</span><span class="pun">:</span><span class="str">R</span><span class="pun">}</span><span class="str">"</span>);   <span class="cmt">// 0.30000000000000004</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"decimal: </span><span class="pun">{</span><span class="vr">m1</span><span class="pun">}</span><span class="str">"</span>);       <span class="cmt">// 0.3  ← exact!</span>
+
+<span class="cmt">// Always use decimal for money and financial calculations!</span></code></pre>
+        </div>
+
+        <!-- Example 6 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Nullable Types</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Regular int cannot hold null</span>
+<span class="kw">int</span> <span class="vr">a</span> = <span class="num">10</span>;
+<span class="cmt">// int b = null;   ← COMPILE ERROR</span>
+
+<span class="cmt">// Nullable int — can hold a number OR null</span>
+<span class="kw">int</span><span class="pun">?</span> <span class="vr">score</span>    = <span class="kw">null</span>;    <span class="cmt">// "no value yet"</span>
+<span class="kw">int</span><span class="pun">?</span> <span class="vr">highScore</span> = <span class="num">98</span>;
+
+<span class="cmt">// Check if it has a value before using it</span>
+<span class="kw2">if</span> <span class="pun">(</span><span class="vr">score</span> <span class="pun">==</span> <span class="kw">null</span><span class="pun">)</span>
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"Score not set yet."</span>);
+
+<span class="cmt">// Null-coalescing operator ?? — provide a default value</span>
+<span class="kw">int</span> <span class="vr">display</span> = <span class="vr">score</span> <span class="pun">??</span> <span class="num">0</span>;   <span class="cmt">// if score is null, use 0</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Display score: </span><span class="pun">{</span><span class="vr">display</span><span class="pun">}</span><span class="str">"</span>);   <span class="cmt">// 0</span></code></pre>
+        </div>
+
+      </div>
+
+      <!-- ===== PRACTICE TASKS ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-practice">
+          <span class="section-icon">✏️</span> Practice Tasks
+        </h2>
+
+        <div class="task-list">
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 1</span>
+              <span class="task-title">Variable Explorer</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Declare one variable of <strong>each</strong> of the following types and assign
+                it a sensible value. Then print all of them using <code>Console.WriteLine()</code>:
+              </p>
+              <ul>
+                <li><code>int</code> — your age</li>
+                <li><code>double</code> — your height in metres (e.g., <code>1.75</code>)</li>
+                <li><code>decimal</code> — the price of a coffee (e.g., <code>450.00m</code>)</li>
+                <li><code>bool</code> — whether you are a student</li>
+                <li><code>char</code> — the first letter of your name</li>
+                <li><code>string</code> — your full name</li>
+              </ul>
+              <p style="margin-top:8px;">Use string interpolation (<code>$"..."</code>) for output.</p>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 2</span>
+              <span class="task-title">Circle Calculator</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Write a program that calculates the area and circumference of a circle.
+              </p>
+              <ul>
+                <li>Declare a <code>const double Pi = 3.14159265358979</code></li>
+                <li>Declare a variable <code>radius</code> and assign it a value (e.g., <code>7.0</code>)</li>
+                <li>Calculate: <code>area = Pi * radius * radius</code></li>
+                <li>Calculate: <code>circumference = 2 * Pi * radius</code></li>
+                <li>Print both results rounded to 2 decimal places using <code>:F2</code></li>
+              </ul>
+              <p style="margin-top:8px;font-size:12.5px;color:var(--color-text-light);">
+                Tip: <code>$"{value:F2}"</code> formats to 2 decimal places.
+              </p>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 3</span>
+              <span class="task-title">Temperature Converter</span>
+              <span class="difficulty medium">Medium</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Write a program that converts temperatures between Celsius and Fahrenheit.
+              </p>
+              <ul>
+                <li>Declare a <code>double celsius</code> variable and set it to <code>100.0</code></li>
+                <li>Convert to Fahrenheit: <code>fahrenheit = celsius * 9.0 / 5.0 + 32</code></li>
+                <li>Convert to Kelvin: <code>kelvin = celsius + 273.15</code></li>
+                <li>Print all three values clearly labelled</li>
+              </ul>
+              <p style="margin-top:8px;"><strong>Bonus challenge:</strong> Also convert back from Fahrenheit to Celsius
+                and verify that you get the original value.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== COMMON MISTAKES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-mistakes">
+          <span class="section-icon">⚠️</span> Common Mistakes
+        </h2>
+
+        <div class="mistakes-list">
+
+          <div class="mistake-item">
+            <div class="mistake-title">Using <code>float</code> or <code>double</code> for money</div>
+            <div class="mistake-desc">
+              This is the most serious mistake of the lesson.
+              <code>double price = 0.1 + 0.2;</code> gives <code>0.30000000000000004</code>, not <code>0.3</code>.
+              Multiply that by a million transactions and you have a financial system that is wrong.
+              Always use <code>decimal</code> for monetary values.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Integer division truncating: <code>5 / 2 = 2</code></div>
+            <div class="mistake-desc">
+              When both operands are <code>int</code>, C# performs <strong>integer division</strong>
+              and discards the remainder. <code>int result = 5 / 2;</code> gives <code>2</code>, not <code>2.5</code>.
+              To get a decimal result, at least one operand must be a floating-point type:
+              <code>double result = 5.0 / 2;</code> gives <code>2.5</code>.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Forgetting literal suffixes: <code>f</code>, <code>m</code>, <code>L</code></div>
+            <div class="mistake-desc">
+              <code>float x = 3.14;</code> — compile error! The literal <code>3.14</code> is a <code>double</code> by default.
+              You must write <code>float x = 3.14f;</code>. Similarly, <code>decimal d = 9.99;</code> fails — needs <code>9.99m</code>.
+              <code>long</code> literals over <code>int</code> max need the <code>L</code> suffix: <code>long n = 3000000000L;</code>.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Declaring a variable without initialization then using it</div>
+            <div class="mistake-desc">
+              Unlike some languages, C# will not let you use an uninitialized local variable.
+              <code>int x; Console.WriteLine(x);</code> is a <strong>compile error</strong>:
+              <em>"Use of unassigned local variable 'x'"</em>.
+              Always assign a value before using a variable.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Confusing <code>char</code> quotes with <code>string</code> quotes</div>
+            <div class="mistake-desc">
+              <code>char</code> uses <strong>single quotes</strong>: <code>'A'</code>.
+              <code>string</code> uses <strong>double quotes</strong>: <code>"A"</code>.
+              <code>char c = "A";</code> is a compile error.
+              <code>char c = 'AB';</code> is also an error — a <code>char</code> holds exactly one character.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== INSTRUCTOR NOTES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-instructor">
+          <span class="section-icon">🎓</span> Instructor Notes
+        </h2>
+
+        <div class="instructor-box">
+          <div class="instructor-label">⚡ Teaching tips for this lesson</div>
+          <ul>
+            <li>
+              <strong>Live-code the floating-point precision demo.</strong> Run the float/double/decimal
+              comparison example live. Seeing <code>0.30000000000000004</code> on screen has a much
+              stronger effect than just explaining it. Then ask: "Would you trust a banking app built with <code>double</code>?"
+            </li>
+            <li>
+              <strong>Spend time on integer division.</strong> This is a common source of subtle bugs.
+              Write <code>int r = 5 / 2;</code> and ask students what the answer is — many will say 2.5.
+              Then show how to fix it with <code>5.0 / 2</code> or casting.
+            </li>
+            <li>
+              <strong>Introduce <code>var</code> but set clear expectations.</strong> Tell students that
+              explicit types make code clearer for beginners and teammates. Use <code>var</code> sparingly
+              in class examples; rely on it more as students become comfortable with types.
+            </li>
+            <li>
+              <strong>Show IntelliSense.</strong> Hover over a <code>var</code> declaration in Visual Studio
+              to show what type was inferred. This builds confidence and shows the value of the IDE.
+            </li>
+            <li>
+              <strong>The data type table is reference material, not memorisation.</strong>
+              Tell students they don't need to memorise ranges — in practice they look them up.
+              The key things to remember: use <code>int</code> for integers, <code>double</code>
+              for scientific math, <code>decimal</code> for money.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ===== ASSIGNMENTS ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-assignments">
+          <span class="section-icon">📋</span> Assignments
+        </h2>
+        <p style="font-size:14px;color:var(--color-text-muted);margin-bottom:16px;">
+          No graded assignment given in this lesson.
+          The first graded tasks (Task 1 — 5 pts and Task 2 — 7 pts) will be given in
+          <a href="l04.html">L04 — Conditional Expressions</a>.
+        </p>
+        <div class="info-box tip">
+          <strong>Self-study recommendation:</strong>
+          Read the metanit.com chapter on data types (section 2.1–2.2). It has excellent
+          additional examples. Try writing a small program that uses every data type from today's lesson.
+        </div>
+      </div>
+
+      <!-- ===== LESSON NAVIGATION ===== -->
+      <div class="lesson-nav">
+        <a href="l01.html" class="nav-btn">
+          <div>
+            <span class="nav-btn-label">← Previous</span>
+            <span class="nav-btn-title">L01 — C# Intro + Program Structure</span>
+          </div>
+        </a>
+        <a href="l03.html" class="nav-btn">
+          <div>
+            <span class="nav-btn-label">Next lesson →</span>
+            <span class="nav-btn-title">L03 — Console I/O + Operations</span>
+          </div>
+        </a>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>

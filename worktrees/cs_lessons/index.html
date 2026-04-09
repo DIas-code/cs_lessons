@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C# + .NET MAUI — Course Home</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home" data-root="./">
+
+  <!-- Mobile hamburger -->
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Sidebar rendered by script.js -->
+  <aside id="sidebar" class="sidebar"></aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="content">
+
+      <!-- ===== HERO ===== -->
+      <div class="hero">
+        <div class="hero-eyebrow">Course Overview</div>
+        <h1>C# + .NET MAUI</h1>
+        <p>
+          A structured introduction to C# programming and cross-platform mobile development
+          with .NET MAUI and PostgreSQL. From first syntax to a full CRUD application.
+        </p>
+
+        <div class="course-meta">
+          <div class="meta-item">
+            <span class="meta-label">Lessons</span>
+            <span class="meta-value">18 lessons</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Schedule</span>
+            <span class="meta-value">Every Friday · 80 min</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Period</span>
+            <span class="meta-value">06 Feb – 12 Jun 2026</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Total points</span>
+            <span class="meta-value">100 pts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STATS ===== -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value">18</div>
+          <div class="stat-label">Total lessons</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" style="color:#639922">9</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" style="color:#BA7517">1</div>
+          <div class="stat-label">Today</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" style="color:#999">8</div>
+          <div class="stat-label">Upcoming</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">100</div>
+          <div class="stat-label">Points total</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">40</div>
+          <div class="stat-label">Final project</div>
+        </div>
+      </div>
+
+      <!-- ===== COURSE PARTS ===== -->
+      <div class="section-heading">Course Structure</div>
+
+      <div class="parts-grid">
+
+        <!-- Part 1 -->
+        <div class="part-card">
+          <div class="part-card-header p1">Part 1 — C# Basics &nbsp;·&nbsp; 9 lessons</div>
+          <div class="part-card-lessons">
+            <a href="lessons/l01.html" class="lesson-row">
+              <span class="lnum">L01</span>
+              <span class="lesson-title">C# intro + program structure</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l02.html" class="lesson-row">
+              <span class="lnum">L02</span>
+              <span class="lesson-title">Variables, constants, data types</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l03.html" class="lesson-row">
+              <span class="lnum">L03</span>
+              <span class="lesson-title">Console I/O + operations</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l04.html" class="lesson-row">
+              <span class="lnum">L04</span>
+              <span class="lesson-title">Conditional expressions</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l05.html" class="lesson-row">
+              <span class="lnum">L05</span>
+              <span class="lesson-title">Loops</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l06.html" class="lesson-row">
+              <span class="lnum">L06</span>
+              <span class="lesson-title">Arrays</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l07.html" class="lesson-row">
+              <span class="lnum">L07</span>
+              <span class="lesson-title">Methods</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l08.html" class="lesson-row">
+              <span class="lnum">L08</span>
+              <span class="lesson-title">Arrays &amp; Methods practice</span>
+              <span class="badge-status done">Done</span>
+            </a>
+            <a href="lessons/l09.html" class="lesson-row">
+              <span class="lnum">L09</span>
+              <span class="lesson-title">Tasks review + Q&amp;A</span>
+              <span class="badge-status done">Done</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Part 2 -->
+        <div class="part-card">
+          <div class="part-card-header p2">Part 2 — OOP &nbsp;·&nbsp; 2 lessons</div>
+          <div class="part-card-lessons">
+            <a href="lessons/l10.html" class="lesson-row">
+              <span class="lnum">L10</span>
+              <span class="lesson-title">OOP pt.1 — Classes, objects, constructors</span>
+              <span class="badge-status today">Today</span>
+            </a>
+            <a href="lessons/l11.html" class="lesson-row">
+              <span class="lnum">L11</span>
+              <span class="lesson-title">OOP pt.2 — Inheritance, interfaces</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Part 3 -->
+        <div class="part-card">
+          <div class="part-card-header p3">Part 3 — .NET MAUI &nbsp;·&nbsp; 6 lessons &nbsp;·&nbsp; 30 pts</div>
+          <div class="part-card-lessons">
+            <a href="lessons/l12.html" class="lesson-row">
+              <span class="lnum">L12</span>
+              <span class="lesson-title">MAUI intro + setup</span>
+            </a>
+            <a href="lessons/l13.html" class="lesson-row">
+              <span class="lnum">L13</span>
+              <span class="lesson-title">UI components + navigation</span>
+            </a>
+            <a href="lessons/l14.html" class="lesson-row">
+              <span class="lnum">L14</span>
+              <span class="lesson-title">Data binding + MVVM</span>
+            </a>
+            <a href="lessons/l15.html" class="lesson-row">
+              <span class="lnum">L15</span>
+              <span class="lesson-title">MAUI + PostgreSQL connection</span>
+            </a>
+            <a href="lessons/l16.html" class="lesson-row">
+              <span class="lnum">L16</span>
+              <span class="lesson-title">CRUD operations</span>
+            </a>
+            <a href="lessons/l17.html" class="lesson-row">
+              <span class="lnum">L17</span>
+              <span class="lesson-title">Final project work session</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Part 4 -->
+        <div class="part-card">
+          <div class="part-card-header p4">Part 4 — Final &nbsp;·&nbsp; 1 lesson &nbsp;·&nbsp; 40 pts</div>
+          <div class="part-card-lessons">
+            <a href="lessons/l18.html" class="lesson-row">
+              <span class="lnum">L18</span>
+              <span class="lesson-title">Final project defense</span>
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /parts-grid -->
+
+      <!-- ===== GRADING SUMMARY ===== -->
+      <div class="section-heading">Grade Breakdown</div>
+
+      <table class="grading-table" style="margin-bottom: 48px;">
+        <thead>
+          <tr>
+            <th>Assignment</th>
+            <th>When</th>
+            <th class="grading-pts">Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="grading-part-sep">
+            <td colspan="3">Part 1 — C# Basics</td>
+          </tr>
+          <tr>
+            <td>Task 1</td>
+            <td style="font-size:12px;color:#999">L04 · 27.02</td>
+            <td class="grading-pts">5 pts</td>
+          </tr>
+          <tr>
+            <td>Task 2 — IF / ELSE</td>
+            <td style="font-size:12px;color:#999">L04 · 27.02</td>
+            <td class="grading-pts">7 pts</td>
+          </tr>
+          <tr>
+            <td>Task 3</td>
+            <td style="font-size:12px;color:#999">L05 · 06.03</td>
+            <td class="grading-pts">2 pts</td>
+          </tr>
+          <tr>
+            <td>Task 4 — Loops, Arrays, Methods</td>
+            <td style="font-size:12px;color:#999">L07 · 20.03</td>
+            <td class="grading-pts">6 pts</td>
+          </tr>
+          <tr class="grading-part-sep">
+            <td colspan="3">Part 2 — OOP</td>
+          </tr>
+          <tr>
+            <td>OOP Assignment (homework)</td>
+            <td style="font-size:12px;color:#999">L11 · 17.04</td>
+            <td class="grading-pts">10 pts</td>
+          </tr>
+          <tr class="grading-part-sep">
+            <td colspan="3">Part 3 — .NET MAUI</td>
+          </tr>
+          <tr>
+            <td>MAUI A1 — UI + Navigation</td>
+            <td style="font-size:12px;color:#999">L13 · 08.05</td>
+            <td class="grading-pts">10 pts</td>
+          </tr>
+          <tr>
+            <td>MAUI A2 — Data Binding / MVVM</td>
+            <td style="font-size:12px;color:#999">L14 · 15.05</td>
+            <td class="grading-pts">10 pts</td>
+          </tr>
+          <tr>
+            <td>MAUI A3 — PostgreSQL + CRUD</td>
+            <td style="font-size:12px;color:#999">L15 · 22.05</td>
+            <td class="grading-pts">10 pts</td>
+          </tr>
+          <tr class="grading-part-sep">
+            <td colspan="3">Part 4 — Final</td>
+          </tr>
+          <tr>
+            <td>Final Project (defense)</td>
+            <td style="font-size:12px;color:#999">L18 · 12.06</td>
+            <td class="grading-pts">40 pts</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total</td>
+            <td></td>
+            <td class="grading-pts">100 pts</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div><!-- /content -->
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
