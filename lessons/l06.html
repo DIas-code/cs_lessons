@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L06 — Arrays | C# + .NET MAUI</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-page="l06" data-root="../">
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside id="sidebar" class="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="content">
+
+      <div class="lesson-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Course</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Part 1 — C# Basics</span>
+        </div>
+        <span class="part-badge p1">Part 1 — C# Basics</span>
+        <h1>L06 — Arrays</h1>
+        <div class="lesson-meta-row">
+          <span class="lesson-date">13 March 2026 &middot; Friday &middot; 80 min</span>
+          <span class="status-badge done">Done</span>
+        </div>
+        <p class="lesson-desc">
+          An array is the most fundamental data structure — a fixed-size, ordered collection of
+          elements of the same type. We learn to declare, initialize, iterate, and manipulate arrays,
+          including 2D arrays and the most useful methods from the <code>Array</code> class.
+        </p>
+      </div>
+
+      <!-- OBJECTIVES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-objectives"><span class="section-icon">🎯</span> Learning Objectives</h2>
+        <ul class="objectives-list">
+          <li>Declare and initialize 1D arrays using both allocation and initializer syntax</li>
+          <li>Access and modify array elements using zero-based indexing</li>
+          <li>Iterate arrays with <code>for</code> (index-based) and <code>foreach</code></li>
+          <li>Use key <code>Array</code> class methods: <code>Sort</code>, <code>Reverse</code>, <code>IndexOf</code>, <code>Copy</code></li>
+          <li>Declare and work with 2D (rectangular) arrays</li>
+          <li>Understand why arrays have a fixed length and when to prefer other collections</li>
+        </ul>
+      </div>
+
+      <!-- THEORY -->
+      <div class="lesson-section">
+        <h2 class="section-title s-theory"><span class="section-icon">📖</span> Theory</h2>
+        <div class="theory-content">
+
+          <h3>1. What Is an Array?</h3>
+          <p>
+            An array is a <strong>fixed-size, contiguous block of memory</strong> that holds multiple
+            elements of the <strong>same type</strong>, accessible by an integer index.
+          </p>
+          <p>Key characteristics:</p>
+          <ul>
+            <li><strong>Fixed size</strong> — once created, the length cannot change</li>
+            <li><strong>Zero-based</strong> — the first element is at index <code>0</code>, the last at <code>Length - 1</code></li>
+            <li><strong>Same type</strong> — all elements must be the same declared type</li>
+            <li><strong>Reference type</strong> — the array variable holds a reference to the data on the heap</li>
+          </ul>
+
+          <h3>2. Declaring and Initializing Arrays</h3>
+          <p>There are several ways to create an array:</p>
+
+          <h4>Method A — Allocate with <code>new</code>, fill later</h4>
+          <p>
+            <code>int[] numbers = new int[5];</code>
+            Creates an array of 5 integers. All elements are initialised to their default value:
+            <code>0</code> for numeric types, <code>false</code> for <code>bool</code>, <code>null</code> for reference types like <code>string</code>.
+          </p>
+
+          <h4>Method B — Array initializer (size inferred)</h4>
+          <p>
+            <code>int[] numbers = { 10, 20, 30, 40, 50 };</code>
+            The size is inferred from the number of values. Clean and concise — preferred when you know the values upfront.
+          </p>
+
+          <h4>Method C — <code>new</code> with explicit initializer</h4>
+          <p>
+            <code>int[] numbers = new int[] { 10, 20, 30 };</code>
+            Equivalent to Method B, but verbose. Sometimes needed in expressions.
+          </p>
+
+          <h3>3. Accessing Elements</h3>
+          <p>
+            Elements are accessed using <strong>square brackets</strong> with a zero-based index.
+          </p>
+          <ul>
+            <li><code>arr[0]</code> — first element</li>
+            <li><code>arr[arr.Length - 1]</code> — last element</li>
+            <li><code>arr[^1]</code> — last element (C# 8+ index-from-end syntax)</li>
+            <li><code>arr[^2]</code> — second from last</li>
+          </ul>
+          <p>Accessing an index outside <code>0</code> to <code>Length-1</code> throws an <code>IndexOutOfRangeException</code> at runtime.</p>
+
+          <h3>4. The <code>Length</code> Property</h3>
+          <p>
+            Every array has a <code>Length</code> property that returns the total number of elements.
+            Always use <code>arr.Length</code> instead of hardcoding the size — your loop will still work
+            correctly if the array size changes.
+          </p>
+
+          <h3>5. Iterating Arrays</h3>
+          <p>Two main approaches:</p>
+          <ul>
+            <li>
+              <strong><code>for</code> loop with index</strong> — use when you need the index, need to modify elements,
+              or need to iterate in non-default order (backwards, skip every other, etc.)
+            </li>
+            <li>
+              <strong><code>foreach</code> loop</strong> — use when you only need the value and don't need the index.
+              Cleaner code, no chance of off-by-one errors. Cannot modify elements.
+            </li>
+          </ul>
+
+          <h3>6. The <code>Array</code> Class — Useful Static Methods</h3>
+          <table class="data-table">
+            <thead><tr><th>Method</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td><code>Array.Sort(arr)</code></td><td>Sorts elements in ascending order (in-place — modifies the original array)</td></tr>
+              <tr><td><code>Array.Reverse(arr)</code></td><td>Reverses the order of elements (in-place)</td></tr>
+              <tr><td><code>Array.IndexOf(arr, value)</code></td><td>Returns the index of the first occurrence of <code>value</code>. Returns <code>-1</code> if not found.</td></tr>
+              <tr><td><code>Array.Copy(src, dest, count)</code></td><td>Copies <code>count</code> elements from <code>src</code> into <code>dest</code></td></tr>
+              <tr><td><code>Array.Fill(arr, value)</code></td><td>Sets all elements to the specified value (.NET 5+)</td></tr>
+              <tr><td><code>Array.Clear(arr)</code></td><td>Resets all elements to their default value (0, false, null)</td></tr>
+            </tbody>
+          </table>
+
+          <div class="info-box warning">
+            <strong>Sort and Reverse modify the original array.</strong>
+            If you need to preserve the original order, copy the array first with <code>Array.Copy()</code>
+            or <code>arr.Clone()</code> before sorting.
+          </div>
+
+          <h3>7. 2D Arrays (Rectangular)</h3>
+          <p>
+            A 2D array stores data in rows and columns — like a table or matrix.
+            Declared with a comma inside the brackets: <code>int[,]</code>
+          </p>
+          <ul>
+            <li><code>int[,] matrix = new int[3, 4];</code> — 3 rows, 4 columns</li>
+            <li>Access: <code>matrix[row, col]</code></li>
+            <li><code>matrix.GetLength(0)</code> — number of rows</li>
+            <li><code>matrix.GetLength(1)</code> — number of columns</li>
+            <li><code>matrix.Length</code> — total elements (rows × cols)</li>
+          </ul>
+
+          <h3>8. Arrays vs. Other Collections</h3>
+          <p>
+            Arrays are fast and simple, but their fixed size is a limitation.
+            When you need a dynamically sized collection, use <code>List&lt;T&gt;</code> instead.
+            We will cover collections in the OOP section.
+          </p>
+
+        </div>
+      </div>
+
+      <!-- CODE EXAMPLES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-examples"><span class="section-icon">💻</span> Code Examples</h2>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Array Declaration and Access</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Method A: allocate first, then assign</span>
+<span class="kw">int</span>[] <span class="vr">scores</span> = <span class="kw">new</span> <span class="kw">int</span>[<span class="num">5</span>];
+<span class="vr">scores</span>[<span class="num">0</span>] = <span class="num">85</span>;
+<span class="vr">scores</span>[<span class="num">1</span>] = <span class="num">92</span>;
+<span class="vr">scores</span>[<span class="num">2</span>] = <span class="num">78</span>;
+<span class="vr">scores</span>[<span class="num">3</span>] = <span class="num">96</span>;
+<span class="vr">scores</span>[<span class="num">4</span>] = <span class="num">61</span>;
+
+<span class="cmt">// Method B: initializer — cleaner</span>
+<span class="kw">string</span>[] <span class="vr">names</span> = <span class="pun">{</span> <span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Carol"</span>, <span class="str">"Dave"</span> <span class="pun">};</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Length: {</span><span class="vr">names</span>.<span class="vr">Length</span><span class="str">}"</span>);         <span class="cmt">// 4</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"First: {</span><span class="vr">names</span>[<span class="num">0</span>]<span class="str">}"</span>);              <span class="cmt">// Alice</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Last:  {</span><span class="vr">names</span>[<span class="vr">names</span>.<span class="vr">Length</span> - <span class="num">1</span>]<span class="str">}"</span>); <span class="cmt">// Dave</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Last:  {</span><span class="vr">names</span>[^<span class="num">1</span>]<span class="str">}"</span>);              <span class="cmt">// Dave (C# 8+ syntax)</span></code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Iterating: for vs foreach</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="kw">int</span>[] <span class="vr">nums</span> = <span class="pun">{</span> <span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span> <span class="pun">};</span>
+
+<span class="cmt">// for — when you need the index</span>
+<span class="kw2">for</span> (<span class="kw">int</span> <span class="vr">i</span> = <span class="num">0</span>; <span class="vr">i</span> &lt; <span class="vr">nums</span>.<span class="vr">Length</span>; <span class="vr">i</span>++)
+<span class="pun">{</span>
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"[{</span><span class="vr">i</span><span class="str">}] = {</span><span class="vr">nums</span>[<span class="vr">i</span>]<span class="str">}"</span>);
+    <span class="vr">nums</span>[<span class="vr">i</span>] *= <span class="num">2</span>;   <span class="cmt">// can modify elements</span>
+<span class="pun">}</span>
+
+<span class="cmt">// foreach — clean when you just need values</span>
+<span class="kw2">foreach</span> (<span class="kw">int</span> <span class="vr">n</span> <span class="kw">in</span> <span class="vr">nums</span>)
+    <span class="cls">Console</span>.<span class="met">Write</span>(<span class="vr">n</span> + <span class="str">" "</span>);   <span class="cmt">// 20 40 60 80 100</span></code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Array Class Methods</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="kw">int</span>[] <span class="vr">arr</span> = <span class="pun">{</span> <span class="num">5</span>, <span class="num">2</span>, <span class="num">8</span>, <span class="num">1</span>, <span class="num">9</span>, <span class="num">3</span> <span class="pun">};</span>
+
+<span class="cls">Array</span>.<span class="met">Sort</span>(<span class="vr">arr</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="kw">string</span>.<span class="met">Join</span>(<span class="str">", "</span>, <span class="vr">arr</span>));   <span class="cmt">// 1, 2, 3, 5, 8, 9</span>
+
+<span class="cls">Array</span>.<span class="met">Reverse</span>(<span class="vr">arr</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="kw">string</span>.<span class="met">Join</span>(<span class="str">", "</span>, <span class="vr">arr</span>));   <span class="cmt">// 9, 8, 5, 3, 2, 1</span>
+
+<span class="cmt">// Search: IndexOf returns -1 if not found</span>
+<span class="kw">int</span> <span class="vr">idx</span> = <span class="cls">Array</span>.<span class="met">IndexOf</span>(<span class="vr">arr</span>, <span class="num">5</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"5 is at index {</span><span class="vr">idx</span><span class="str">}"</span>);   <span class="cmt">// 5 is at index 2</span>
+
+<span class="cmt">// Find min and max manually</span>
+<span class="kw">int</span> <span class="vr">min</span> = <span class="vr">arr</span>[<span class="num">0</span>], <span class="vr">max</span> = <span class="vr">arr</span>[<span class="num">0</span>];
+<span class="kw2">foreach</span> (<span class="kw">int</span> <span class="vr">n</span> <span class="kw">in</span> <span class="vr">arr</span>)
+<span class="pun">{</span>
+    <span class="kw2">if</span> (<span class="vr">n</span> &lt; <span class="vr">min</span>) <span class="vr">min</span> = <span class="vr">n</span>;
+    <span class="kw2">if</span> (<span class="vr">n</span> &gt; <span class="vr">max</span>) <span class="vr">max</span> = <span class="vr">n</span>;
+<span class="pun">}</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Min={</span><span class="vr">min</span><span class="str">}, Max={</span><span class="vr">max</span><span class="str">}"</span>);</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — 2D Array (Matrix)</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// 3x3 matrix with initializer</span>
+<span class="kw">int</span>[,] <span class="vr">matrix</span> = <span class="pun">{</span>
+    <span class="pun">{</span> <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span> <span class="pun">},</span>
+    <span class="pun">{</span> <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span> <span class="pun">},</span>
+    <span class="pun">{</span> <span class="num">7</span>, <span class="num">8</span>, <span class="num">9</span> <span class="pun">}</span>
+<span class="pun">};</span>
+
+<span class="kw">int</span> <span class="vr">rows</span> = <span class="vr">matrix</span>.<span class="met">GetLength</span>(<span class="num">0</span>);   <span class="cmt">// 3</span>
+<span class="kw">int</span> <span class="vr">cols</span> = <span class="vr">matrix</span>.<span class="met">GetLength</span>(<span class="num">1</span>);   <span class="cmt">// 3</span>
+
+<span class="cmt">// Print matrix using nested loops</span>
+<span class="kw2">for</span> (<span class="kw">int</span> <span class="vr">r</span> = <span class="num">0</span>; <span class="vr">r</span> &lt; <span class="vr">rows</span>; <span class="vr">r</span>++)
+<span class="pun">{</span>
+    <span class="kw2">for</span> (<span class="kw">int</span> <span class="vr">c</span> = <span class="num">0</span>; <span class="vr">c</span> &lt; <span class="vr">cols</span>; <span class="vr">c</span>++)
+        <span class="cls">Console</span>.<span class="met">Write</span>(<span class="str">$"{</span><span class="vr">matrix</span>[<span class="vr">r</span>, <span class="vr">c</span>]<span class="str">,4}"</span>);
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>();
+<span class="pun">}</span>
+<span class="cmt">/*
+   1   2   3
+   4   5   6
+   7   8   9
+*/</span>
+
+<span class="cmt">// Sum of diagonal (top-left to bottom-right)</span>
+<span class="kw">int</span> <span class="vr">diagSum</span> = <span class="num">0</span>;
+<span class="kw2">for</span> (<span class="kw">int</span> <span class="vr">i</span> = <span class="num">0</span>; <span class="vr">i</span> &lt; <span class="vr">rows</span>; <span class="vr">i</span>++)
+    <span class="vr">diagSum</span> += <span class="vr">matrix</span>[<span class="vr">i</span>, <span class="vr">i</span>];   <span class="cmt">// 1 + 5 + 9 = 15</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Diagonal sum: {</span><span class="vr">diagSum</span><span class="str">}"</span>);</code></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Reading an Array from the User</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cls">Console</span>.<span class="met">Write</span>(<span class="str">"How many numbers? "</span>);
+<span class="kw">int</span> <span class="vr">n</span> = <span class="kw">int</span>.<span class="met">Parse</span>(<span class="cls">Console</span>.<span class="met">ReadLine</span>()!);
+
+<span class="kw">int</span>[] <span class="vr">arr</span> = <span class="kw">new</span> <span class="kw">int</span>[<span class="vr">n</span>];
+
+<span class="kw2">for</span> (<span class="kw">int</span> <span class="vr">i</span> = <span class="num">0</span>; <span class="vr">i</span> &lt; <span class="vr">n</span>; <span class="vr">i</span>++)
+<span class="pun">{</span>
+    <span class="cls">Console</span>.<span class="met">Write</span>(<span class="str">$"Enter number [{</span><span class="vr">i</span> + <span class="num">1</span><span class="str">}]: "</span>);
+    <span class="vr">arr</span>[<span class="vr">i</span>] = <span class="kw">int</span>.<span class="met">Parse</span>(<span class="cls">Console</span>.<span class="met">ReadLine</span>()!);
+<span class="pun">}</span>
+
+<span class="cls">Array</span>.<span class="met">Sort</span>(<span class="vr">arr</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"Sorted: "</span> + <span class="kw">string</span>.<span class="met">Join</span>(<span class="str">", "</span>, <span class="vr">arr</span>));
+
+<span class="kw">int</span> <span class="vr">sum</span> = <span class="num">0</span>;
+<span class="kw2">foreach</span> (<span class="kw">int</span> <span class="vr">x</span> <span class="kw">in</span> <span class="vr">arr</span>) <span class="vr">sum</span> += <span class="vr">x</span>;
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Sum: {</span><span class="vr">sum</span><span class="str">}, Avg: {</span>(<span class="kw">double</span>)<span class="vr">sum</span> / <span class="vr">n</span><span class="str">:F2}"</span>);</code></pre>
+        </div>
+      </div>
+
+      <!-- PRACTICE -->
+      <div class="lesson-section">
+        <h2 class="section-title s-practice"><span class="section-icon">✏️</span> Practice Tasks</h2>
+        <div class="task-list">
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 1</span>
+              <span class="task-title">Array Statistics</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>Declare an array of 8 integers with values of your choice. Without using built-in Math methods, compute and print:</p>
+              <ul>
+                <li>Sum of all elements</li>
+                <li>Average (as a <code>double</code>)</li>
+                <li>Minimum value</li>
+                <li>Maximum value</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 2</span>
+              <span class="task-title">Reverse Without Array.Reverse</span>
+              <span class="difficulty medium">Medium</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Write a program that reads 5 integers from the user into an array,
+                then prints them in <strong>reverse order</strong> — without using <code>Array.Reverse()</code>.
+              </p>
+              <p style="margin-top:6px;">Implement it using a <code>for</code> loop that runs from <code>Length-1</code> down to <code>0</code>.</p>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 3</span>
+              <span class="task-title">2D Matrix: Row Sums</span>
+              <span class="difficulty medium">Medium</span>
+            </div>
+            <div class="task-body">
+              <p>Create a 3×4 integer matrix with any values. Using nested loops:</p>
+              <ul>
+                <li>Print the matrix row by row</li>
+                <li>Print the sum of each row</li>
+                <li>Print the total sum of all elements</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MISTAKES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-mistakes"><span class="section-icon">⚠️</span> Common Mistakes</h2>
+        <div class="mistakes-list">
+
+          <div class="mistake-item">
+            <div class="mistake-title"><code>IndexOutOfRangeException</code> — accessing beyond array bounds</div>
+            <div class="mistake-desc">
+              The most frequent array runtime error. Accessing <code>arr[arr.Length]</code> instead of
+              <code>arr[arr.Length - 1]</code> throws immediately. Always remember: last valid index is <code>Length - 1</code>.
+              Use <code>arr.Length</code> as the loop condition, not <code>&lt;= arr.Length</code>.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Hardcoding the array size in a loop</div>
+            <div class="mistake-desc">
+              <code>for (int i = 0; i &lt; 5; i++)</code> — if you later change the array from 5 to 7 elements,
+              the loop won't cover all elements and no error will appear.
+              Always write <code>i &lt; arr.Length</code> so the loop adapts automatically.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Trying to resize an array after creation</div>
+            <div class="mistake-desc">
+              Arrays in C# have a fixed size. <code>arr.Length = 10;</code> is a compile error — <code>Length</code>
+              is read-only. If you need to add/remove elements dynamically, use <code>List&lt;int&gt;</code> instead.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Sorting the original when you wanted a copy</div>
+            <div class="mistake-desc">
+              <code>Array.Sort()</code> modifies the array <strong>in place</strong>. If you need the original
+              order preserved, copy first: <code>int[] sorted = (int[])arr.Clone();</code> then sort <code>sorted</code>.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- INSTRUCTOR NOTES -->
+      <div class="lesson-section">
+        <h2 class="section-title s-instructor"><span class="section-icon">🎓</span> Instructor Notes</h2>
+        <div class="instructor-box">
+          <div class="instructor-label">⚡ Teaching tips</div>
+          <ul>
+            <li><strong>Draw memory boxes for the first example.</strong> Sketch 5 boxes labelled 0–4 on the board, then fill them as you write the code. The visual "array = boxes in a row" model sticks well and prevents index confusion.</li>
+            <li><strong>Force the IndexOutOfRange live.</strong> Write <code>arr[arr.Length]</code> intentionally and run it. Reading the red exception message in the console teaches students to decode runtime errors themselves.</li>
+            <li><strong>Introduce <code>string.Join()</code> early.</strong> Printing an array with <code>string.Join(", ", arr)</code> is dramatically cleaner than a manual loop. Students will use it constantly — introduce it here.</li>
+            <li><strong>2D arrays — keep it visual.</strong> Draw the grid on the board with row/col indices labeled. Students who struggle with nested loops immediately understand once they see the grid with coordinates.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- NAV -->
+      <div class="lesson-nav">
+        <a href="l05.html" class="nav-btn">
+          <div><span class="nav-btn-label">← Previous</span><span class="nav-btn-title">L05 — Loops</span></div>
+        </a>
+        <a href="l07.html" class="nav-btn">
+          <div><span class="nav-btn-label">Next lesson →</span><span class="nav-btn-title">L07 — Methods</span></div>
+        </a>
+      </div>
+
+    </div>
+  </main>
+  <script src="../script.js"></script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L01 — C# Intro + Program Structure | C# + .NET MAUI</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body data-page="l01" data-root="../">
+
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside id="sidebar" class="sidebar"></aside>
+
+  <main class="main-content">
+    <div class="content">
+
+      <!-- ===== LESSON HEADER ===== -->
+      <div class="lesson-header">
+        <div class="breadcrumb">
+          <a href="../index.html">Course</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Part 1 — C# Basics</span>
+        </div>
+        <span class="part-badge p1">Part 1 — C# Basics</span>
+        <h1>L01 — C# Intro + Program Structure</h1>
+        <div class="lesson-meta-row">
+          <span class="lesson-date">06 February 2026 &middot; Friday &middot; 80 min</span>
+          <span class="status-badge done">Done</span>
+        </div>
+        <p class="lesson-desc">
+          Introduction to the C# programming language and the .NET ecosystem. We set up
+          the development environment, write our first console application, and learn how
+          a C# program is structured from top to bottom.
+        </p>
+      </div>
+
+      <!-- ===== LEARNING OBJECTIVES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-objectives">
+          <span class="section-icon">🎯</span> Learning Objectives
+        </h2>
+        <ul class="objectives-list">
+          <li>Understand what C# is, where it runs, and what it is used for in the real world</li>
+          <li>Explain the role of the .NET runtime (CLR) and why it matters</li>
+          <li>Install Visual Studio and create a new Console Application project</li>
+          <li>Write, build, and run a first C# program</li>
+          <li>Read and explain every part of a basic C# program structure</li>
+        </ul>
+      </div>
+
+      <!-- ===== THEORY ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-theory">
+          <span class="section-icon">📖</span> Theory
+        </h2>
+
+        <div class="theory-content">
+
+          <h3>1. What is C#?</h3>
+          <p>
+            <strong>C#</strong> (pronounced "C sharp") is a modern, object-oriented, strongly typed
+            programming language created by Microsoft. It was designed by <strong>Anders Hejlsberg</strong>
+            and first released in 2000 as part of the .NET platform.
+          </p>
+          <p>C# is used in a very wide range of applications:</p>
+          <ul>
+            <li><strong>Desktop apps</strong> — Windows Forms, WPF, .NET MAUI</li>
+            <li><strong>Web backends</strong> — ASP.NET Core (APIs, MVC websites)</li>
+            <li><strong>Mobile apps</strong> — .NET MAUI (iOS, Android, Windows)</li>
+            <li><strong>Games</strong> — Unity (the most popular game engine uses C# as its scripting language)</li>
+            <li><strong>Cloud services</strong> — Azure Functions, microservices</li>
+          </ul>
+
+          <div class="info-box note">
+            <strong>Why learn C#?</strong>
+            C# is consistently in the top 5 most used programming languages worldwide (TIOBE, Stack Overflow surveys).
+            It is in high demand for enterprise software, game development, and mobile applications.
+          </div>
+
+          <h3>2. The .NET Ecosystem</h3>
+          <p>
+            C# does not run alone — it runs on top of a platform called <strong>.NET</strong>.
+            Think of .NET as the engine that powers your C# code.
+          </p>
+          <p>The key components of .NET you need to know:</p>
+          <ul>
+            <li>
+              <strong>CLR — Common Language Runtime.</strong>
+              The virtual machine that executes your program. Your C# source code is first compiled into
+              <em>Intermediate Language (IL)</em>, and the CLR then compiles IL into native machine code
+              at runtime (this is called JIT — Just-In-Time compilation).
+            </li>
+            <li>
+              <strong>BCL — Base Class Library.</strong>
+              A huge collection of ready-to-use classes: <code>Console</code>, <code>Math</code>,
+              <code>List&lt;T&gt;</code>, file I/O, networking, etc. You do not write these from scratch.
+            </li>
+            <li>
+              <strong>SDK — Software Development Kit.</strong>
+              The tools you install to write and build .NET applications: compilers, CLI tools, project templates.
+            </li>
+          </ul>
+
+          <div class="info-box tip">
+            <strong>Brief history — don't confuse these:</strong>
+            <ul>
+              <li><strong>.NET Framework</strong> (2002–2019) — Windows-only, legacy</li>
+              <li><strong>.NET Core</strong> (2016–2020) — cross-platform rewrite</li>
+              <li><strong>.NET 5 – 10</strong> — the current unified platform (cross-platform, open source). Even-numbered releases are LTS.</li>
+            </ul>
+            In this course we use <strong>.NET 10</strong> (LTS — Long Term Support).
+          </div>
+
+          <h3>3. Setting Up the Environment</h3>
+          <p>
+            We use <strong>Visual Studio 2026 Community</strong> — it is free, full-featured, and the
+            industry standard for C# and .NET MAUI development on Windows.
+          </p>
+
+          <h4>Installation steps:</h4>
+          <ol>
+            <li>Go to <strong>visualstudio.microsoft.com</strong> and download <em>Visual Studio 2026 Community</em></li>
+            <li>Run the installer and select the workload: <strong>.NET desktop development</strong></li>
+            <li>For MAUI (later in the course), also select: <strong>.NET Multi-platform App UI development</strong></li>
+            <li>Click Install. This may take 10–30 minutes depending on your connection.</li>
+            <li>Launch Visual Studio → Sign in (or skip) → Start</li>
+          </ol>
+
+          <div class="info-box warning">
+            <strong>Minimum system requirements:</strong>
+            Windows 10/11, 4 GB RAM (8 GB recommended), 10 GB free disk space.
+            For Android MAUI emulator: 16 GB RAM recommended.
+          </div>
+
+          <h3>4. Creating Your First Project</h3>
+          <ol>
+            <li>Open Visual Studio → <strong>Create a new project</strong></li>
+            <li>Search for <strong>Console App</strong> (make sure it says C#, not VB)</li>
+            <li>Click <strong>Next</strong></li>
+            <li>Name your project (e.g., <code>HelloWorld</code>), choose a folder, click <strong>Next</strong></li>
+            <li>Select framework: <strong>.NET 10 (Long Term Support)</strong></li>
+            <li>Click <strong>Create</strong></li>
+          </ol>
+          <p>Visual Studio creates the project and opens <code>Program.cs</code> — your entry point.</p>
+
+          <h3>5. Understanding Project Structure</h3>
+          <p>After creating a Console App project, you will see:</p>
+          <ul>
+            <li>
+              <code>Program.cs</code> — the main source file where your code lives.
+              In modern C# (v9+), this uses <em>top-level statements</em> — no boilerplate needed.
+            </li>
+            <li>
+              <code>ProjectName.csproj</code> — the project configuration file (XML format).
+              It tells .NET which SDK version to use, target framework, dependencies, etc.
+            </li>
+            <li>
+              <code>bin/</code> — compiled output (the executable your computer actually runs).
+              You do not edit anything here.
+            </li>
+            <li>
+              <code>obj/</code> — intermediate build files. Ignore this folder.
+            </li>
+          </ul>
+
+          <h3>6. Your First C# Program</h3>
+          <p>
+            Modern C# (version 9 and above) supports <strong>top-level statements</strong>.
+            This means you can write executable code directly in <code>Program.cs</code>
+            without wrapping it in a class or a <code>Main</code> method.
+          </p>
+          <p>
+            Behind the scenes, the compiler generates the class and <code>Main</code> method for you.
+            This is purely syntactic sugar — both styles produce identical compiled output.
+          </p>
+
+          <h3>7. Anatomy of a Traditional C# Program</h3>
+          <p>It is important to also understand the "classic" structure, because you will encounter it
+          in older codebases and tutorials:</p>
+          <ul>
+            <li><strong>using directives</strong> — import namespaces (like Python's <code>import</code>)</li>
+            <li><strong>namespace</strong> — groups your code logically (prevents name conflicts)</li>
+            <li><strong>class</strong> — every C# program has at least one class</li>
+            <li><strong>static void Main()</strong> — the entry point; this is where execution starts</li>
+          </ul>
+
+          <h3>8. Comments in C#</h3>
+          <p>Comments are notes in your code that the compiler completely ignores:</p>
+          <ul>
+            <li><code>// single-line comment</code></li>
+            <li><code>/* multi-line comment */</code></li>
+            <li><code>/// XML doc comment</code> — used to generate documentation (advanced)</li>
+          </ul>
+
+        </div>
+      </div>
+
+      <!-- ===== CODE EXAMPLES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-examples">
+          <span class="section-icon">💻</span> Code Examples
+        </h2>
+
+        <p style="font-size:14px;color:var(--color-text-muted);margin-bottom:20px;">
+          Open Visual Studio, create a Console App project, and try each example below.
+          Run with <kbd style="background:#f0f0ef;padding:2px 6px;border-radius:3px;font-size:12px">Ctrl+F5</kbd>.
+        </p>
+
+        <!-- Example 1 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Top-Level Statements (Modern)</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Example 1 — Hello World (C# 9+ style)</span>
+<span class="cmt">// No class, no Main() needed — just write code directly</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"Hello, World!"</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"Welcome to C#!"</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"My first program."</span>);</code></pre>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Traditional Structure (Classic)</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Example 2 — The same program, written in the traditional style</span>
+<span class="cmt">// This is what ALL C# code looked like before version 9</span>
+
+<span class="kw">using</span> System;         <span class="cmt">// import the System namespace</span>
+
+<span class="kw">namespace</span> <span class="cls">HelloWorld</span>  <span class="cmt">// namespace groups related classes</span>
+<span class="pun">{</span>
+    <span class="kw">class</span> <span class="cls">Program</span>       <span class="cmt">// every C# program has at least one class</span>
+    <span class="pun">{</span>
+        <span class="kw">static</span> <span class="kw">void</span> <span class="met">Main</span><span class="pun">(</span><span class="kw">string</span><span class="pun">[]</span> <span class="vr">args</span><span class="pun">)</span>  <span class="cmt">// entry point</span>
+        <span class="pun">{</span>
+            <span class="cls">Console</span>.<span class="met">WriteLine</span><span class="pun">(</span><span class="str">"Hello, World!"</span><span class="pun">);</span>
+            <span class="cls">Console</span>.<span class="met">WriteLine</span><span class="pun">(</span><span class="str">"Welcome to C#!"</span><span class="pun">);</span>
+            <span class="cls">Console</span>.<span class="met">WriteLine</span><span class="pun">(</span><span class="str">"My first program."</span><span class="pun">);</span>
+        <span class="pun">}</span>
+    <span class="pun">}</span>
+<span class="pun">}</span></code></pre>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Console Output Methods</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Example 3 — Different ways to write to the console</span>
+
+<span class="cmt">// WriteLine — prints text and moves to the NEXT LINE</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"This is on line 1."</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"This is on line 2."</span>);
+
+<span class="cmt">// Write — prints text WITHOUT moving to next line</span>
+<span class="cls">Console</span>.<span class="met">Write</span>(<span class="str">"Hello, "</span>);
+<span class="cls">Console</span>.<span class="met">Write</span>(<span class="str">"World!"</span>);   <span class="cmt">// continues on the same line</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>();        <span class="cmt">// now move to next line (empty WriteLine)</span>
+
+<span class="cmt">// String interpolation — embed variables into strings (preview)</span>
+<span class="kw">string</span> <span class="vr">name</span> = <span class="str">"Alice"</span>;
+<span class="kw">int</span> <span class="vr">age</span> = <span class="num">21</span>;
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Name: </span><span class="pun">{</span><span class="vr">name</span><span class="pun">}</span><span class="str">, Age: </span><span class="pun">{</span><span class="vr">age</span><span class="pun">}</span><span class="str">"</span>);
+
+<span class="cmt">// Output:
+// Name: Alice, Age: 21</span></code></pre>
+        </div>
+
+        <!-- Example 4 -->
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Comments</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cmt">// Single-line comment — anything after // is ignored by the compiler</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"Hello!"</span>); <span class="cmt">// inline comment at end of line</span>
+
+<span class="cmt">/*
+   Multi-line comment.
+   Everything between the slash-star and star-slash is ignored.
+   Useful for longer explanations or temporarily disabling code.
+*/</span>
+
+<span class="cmt">// Console.WriteLine("This line is commented out — it won't run!");</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">"Done."</span>);</code></pre>
+        </div>
+
+      </div>
+
+      <!-- ===== PRACTICE TASKS ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-practice">
+          <span class="section-icon">✏️</span> Practice Tasks
+        </h2>
+
+        <div class="task-list">
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 1</span>
+              <span class="task-title">Personal Introduction App</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>Create a new Console App project and write a program that prints
+                an introduction about yourself. Include at least 5 lines:</p>
+              <ul>
+                <li>Your name</li>
+                <li>Your age</li>
+                <li>Your city</li>
+                <li>Your hobby</li>
+                <li>Why you want to learn C#</li>
+              </ul>
+              <p style="margin-top:10px;">Use <code>Console.WriteLine()</code> for each line.</p>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 2</span>
+              <span class="task-title">ASCII Art in the Console</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Draw a simple shape or pattern using <code>Console.WriteLine()</code>.
+                For example, a rectangle made of <code>*</code> symbols, a triangle,
+                or a simple smiley face. Use at least 6 lines of output.
+              </p>
+              <p style="margin-top:8px;font-size:12.5px;color:var(--color-text-light);">
+                Tip: strings like <code>"*****"</code> and <code>"*   *"</code> can form borders.
+              </p>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 3</span>
+              <span class="task-title">Explore the .csproj File</span>
+              <span class="difficulty medium">Medium</span>
+            </div>
+            <div class="task-body">
+              <p>
+                In Solution Explorer, right-click on the project name → <strong>Edit Project File</strong>.
+                Read the <code>.csproj</code> XML and answer the following questions
+                in a comment block inside <code>Program.cs</code>:
+              </p>
+              <ul>
+                <li>What is the <code>OutputType</code>?</li>
+                <li>What is the <code>TargetFramework</code>?</li>
+                <li>What does <code>Nullable</code> control?</li>
+              </ul>
+              <p style="margin-top:8px;font-size:12.5px;color:var(--color-text-light);">
+                The goal is to understand the project file, not to modify it.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== COMMON MISTAKES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-mistakes">
+          <span class="section-icon">⚠️</span> Common Mistakes
+        </h2>
+
+        <div class="mistakes-list">
+
+          <div class="mistake-item">
+            <div class="mistake-title">Forgetting the semicolon</div>
+            <div class="mistake-desc">
+              Every statement in C# must end with <code>;</code>.
+              Writing <code>Console.WriteLine("Hello")</code> without the semicolon causes a compile error.
+              C# is not Python — whitespace and line endings have no meaning; the semicolon
+              is the statement terminator.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Case sensitivity — <code>console</code> vs <code>Console</code></div>
+            <div class="mistake-desc">
+              C# is <strong>case-sensitive</strong>. <code>Console</code> is the class name and must
+              start with a capital C. Writing <code>console.writeline()</code> will not compile.
+              Similarly, <code>Main</code>, <code>String</code>, <code>WriteLine</code> — all capitalised.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Forgetting to use <code>Console.ReadLine()</code> to pause the console</div>
+            <div class="mistake-desc">
+              When running with <strong>Ctrl+F5</strong> (Start Without Debugging), the console stays open.
+              But if you run with <strong>F5</strong> (Debug) and your program ends immediately,
+              the window closes. Add <code>Console.ReadLine();</code> at the end to pause and wait
+              for the user to press Enter. (Not always needed — depends on project settings.)
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Mixing up <code>Write</code> and <code>WriteLine</code></div>
+            <div class="mistake-desc">
+              <code>Console.Write()</code> prints text and stays on the same line.
+              <code>Console.WriteLine()</code> prints text and moves to the next line.
+              Students often use <code>Write</code> everywhere and wonder why their output runs together.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===== INSTRUCTOR NOTES ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-instructor">
+          <span class="section-icon">🎓</span> Instructor Notes
+        </h2>
+
+        <div class="instructor-box">
+          <div class="instructor-label">⚡ Teaching tips for this lesson</div>
+          <ul>
+            <li>
+              <strong>Budget 15–20 min for installation.</strong> Many students arrive without
+              Visual Studio 2026 installed. Walk through it live on the projector while students follow along.
+              Have a USB drive with the offline installer as backup.
+            </li>
+            <li>
+              <strong>Show BOTH styles of Hello World</strong> (top-level + traditional), then explain
+              which one you'll use going forward and why. Students who look up external tutorials will
+              see the traditional style, so they must recognise it.
+            </li>
+            <li>
+              <strong>Demonstrate Ctrl+F5 vs F5.</strong> Many students accidentally close the console
+              window immediately. Establishing the keyboard shortcut habit early prevents confusion.
+            </li>
+            <li>
+              <strong>Explain IL briefly.</strong> Showing students that C# compiles to IL (not machine code directly)
+              helps them understand why .NET runs on multiple platforms. A one-sentence analogy works:
+              <em>"IL is like a universal language that the CLR on each platform understands."</em>
+            </li>
+            <li>
+              <strong>Do not go deep on namespaces and classes today.</strong> Just show the structure visually —
+              these will be covered properly in the OOP lessons.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ===== ASSIGNMENTS ===== -->
+      <div class="lesson-section">
+        <h2 class="section-title s-assignments">
+          <span class="section-icon">📋</span> Assignments
+        </h2>
+        <p style="font-size:14px;color:var(--color-text-muted);margin-bottom:16px;">
+          No graded assignment is given in this lesson. The formal assignment (Task 1 — 5 pts)
+          will be given in <a href="l04.html">L04 — Conditional Expressions</a>.
+        </p>
+        <div class="info-box tip">
+          <strong>Recommendation:</strong>
+          After class, try to recreate the Hello World program from memory without looking at your notes.
+          Then extend it: make it print a small table — your name in one column, your age in another.
+          This reinforces muscle memory for the syntax.
+        </div>
+      </div>
+
+      <!-- ===== LESSON NAVIGATION ===== -->
+      <div class="lesson-nav">
+        <span></span>
+        <a href="l02.html" class="nav-btn">
+          <div>
+            <span class="nav-btn-label">Next lesson →</span>
+            <span class="nav-btn-title">L02 — Variables, Constants, Data Types</span>
+          </div>
+        </a>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+
+  <script src="../script.js"></script>
+</body>
+</html>
