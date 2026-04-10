@@ -15,16 +15,16 @@ const LESSONS = [
   { id: 'l09', num: 'L09', title: 'Tasks review + Q&amp;A',           date: '03.04', part: 1, status: 'done' },
 
   // Part 2 — OOP
-  { id: 'l10', num: 'L10', title: 'OOP pt.1 — Classes &amp; objects', date: '10.04', part: 2, status: 'today' },
-  { id: 'l11', num: 'L11', title: 'OOP pt.2 — Inheritance &amp; interfaces', date: '17.04', part: 2, status: 'upcoming' },
+  { id: 'l10', num: 'L10', title: 'OOP pt.1 — Classes &amp; Objects',            date: '10.04', part: 2, status: 'today' },
+  { id: 'l11', num: 'L11', title: 'OOP pt.2 — Constructors &amp; Encapsulation', date: '17.04', part: 2, status: 'upcoming' },
+  { id: 'l12', num: 'L12', title: 'OOP pt.3 — Inheritance &amp; Interfaces',     date: '24.04', part: 2, status: 'upcoming' },
 
   // Part 3 — .NET MAUI
-  { id: 'l12', num: 'L12', title: 'MAUI intro + setup',               date: '24.04', part: 3, status: 'upcoming' },
-  { id: 'l13', num: 'L13', title: 'UI components + navigation',       date: '08.05', part: 3, status: 'upcoming' },
-  { id: 'l14', num: 'L14', title: 'Data binding + MVVM',              date: '15.05', part: 3, status: 'upcoming' },
-  { id: 'l15', num: 'L15', title: 'MAUI + PostgreSQL connection',     date: '22.05', part: 3, status: 'upcoming' },
-  { id: 'l16', num: 'L16', title: 'CRUD operations',                  date: '29.05', part: 3, status: 'upcoming' },
-  { id: 'l17', num: 'L17', title: 'Final project work session',       date: '05.06', part: 3, status: 'upcoming' },
+  { id: 'l13', num: 'L13', title: 'MAUI intro + setup',               date: '08.05', part: 3, status: 'upcoming' },
+  { id: 'l14', num: 'L14', title: 'UI components + navigation',       date: '15.05', part: 3, status: 'upcoming' },
+  { id: 'l15', num: 'L15', title: 'Data binding + MVVM',              date: '22.05', part: 3, status: 'upcoming' },
+  { id: 'l16', num: 'L16', title: 'MAUI + PostgreSQL connection',     date: '29.05', part: 3, status: 'upcoming' },
+  { id: 'l17', num: 'L17', title: 'CRUD operations',                  date: '05.06', part: 3, status: 'upcoming' },
 
   // Part 4 — Final
   { id: 'l18', num: 'L18', title: 'Final project defense',            date: '12.06', part: 4, status: 'upcoming' },
