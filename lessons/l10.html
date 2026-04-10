@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>L10 — OOP Part 1: Classes &amp; Objects | C# + .NET MAUI</title>
+  <title>L10 — OOP pt.1: Classes, Objects, Constructors | C# + .NET MAUI</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body data-page="l10" data-root="../">
@@ -17,6 +17,7 @@
   <main class="main-content">
     <div class="content">
 
+      <!-- ═══════════════════════════════════════ HEADER ═══════════════════════════════════════ -->
       <div class="lesson-header">
         <div class="breadcrumb">
           <a href="../index.html">Course</a>
@@ -24,189 +25,345 @@
           <span>Part 2 — OOP</span>
         </div>
         <span class="part-badge p2">Part 2 — OOP</span>
-        <h1>L10 — OOP Part 1: Classes &amp; Objects</h1>
+        <h1>L10 — OOP pt.1: Classes, Objects, Constructors</h1>
         <div class="lesson-meta-row">
           <span class="lesson-date">10 April 2026 &middot; Friday &middot; 80 min</span>
           <span class="status-badge today">Today</span>
         </div>
+        <p class="lesson-desc">
+          Object-Oriented Programming is the foundation of modern C# development. This lesson
+          introduces the core building blocks: what objects really are, how to design classes that
+          model real-world entities, and how constructors initialise them. You will shift from
+          thinking about code as isolated functions to thinking about collections of objects that
+          collaborate.
+        </p>
       </div>
 
-      <!-- LEARNING OBJECTIVES -->
-      <section class="section">
-        <h2>Learning Objectives</h2>
+      <!-- ═══════════════════════════════════════ OBJECTIVES ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-objectives"><span class="section-icon">🎯</span> Learning Objectives</h2>
         <ul class="objectives-list">
-          <li>Understand what Object-Oriented Programming is and why it exists</li>
-          <li>Declare classes with fields, properties, and constructors</li>
-          <li>Create and use objects (instances of a class)</li>
-          <li>Distinguish between value types and reference types in practice</li>
-          <li>Apply encapsulation using access modifiers and auto-properties</li>
+          <li>Define what OOP is and explain why it replaced purely procedural code</li>
+          <li>Distinguish between a class (blueprint) and an object (instance) with concrete examples</li>
+          <li>Create fields, auto-properties, validated properties, and computed properties</li>
+          <li>Build constructors — default, parameterised, chaining, and primary (C# 12)</li>
+          <li>Apply access modifiers to enforce encapsulation and data integrity</li>
+          <li>Explain value-type vs reference-type behaviour for class instances</li>
         </ul>
-      </section>
+      </div>
 
-      <!-- THEORY: WHAT IS OOP -->
-      <section class="section">
-        <h2>1. What is Object-Oriented Programming?</h2>
-        <p>
-          So far we have written <strong>procedural code</strong> — a sequence of instructions, loops, and methods
-          operating on primitive data. As programs grow, this becomes hard to manage: data and the code that operates
-          on it are spread everywhere.
-        </p>
-        <p>
-          <strong>Object-Oriented Programming (OOP)</strong> solves this by organising code around <em>objects</em> —
-          bundles that hold both <em>data</em> (fields/properties) and <em>behaviour</em> (methods) together.
-        </p>
+      <!-- ═══════════════════════════════════════ THEORY ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-theory"><span class="section-icon">📖</span> Theory</h2>
 
-        <div class="info-box">
-          <strong>The four pillars of OOP</strong><br>
-          We will cover all four across L10 and L11:
-          <ol style="margin:0.5rem 0 0 1.2rem;">
-            <li><strong>Encapsulation</strong> — hiding internal details, exposing a clean interface (today)</li>
-            <li><strong>Abstraction</strong> — modelling only what is relevant (today)</li>
-            <li><strong>Inheritance</strong> — reusing and extending existing classes (L11)</li>
-            <li><strong>Polymorphism</strong> — one interface, many forms (L11)</li>
-          </ol>
+        <!-- ──── 1. What is OOP ──── -->
+        <div class="theory-content">
+          <h3>1. What Is OOP and Why It Exists</h3>
+
+          <p>
+            In Part 1 you wrote <strong>procedural code</strong> — data lives in separate
+            variables and functions operate on them from the outside. This works at small
+            scale, but with 30 students you'd need 30 names, 30 ages, 30 GPAs — all disconnected.
+          </p>
+
+          <details>
+            <summary>The procedural problem — scattered data</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Procedural: data and behaviour are separate</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">string</span> <span class="vr">studentName</span> = <span class="str">"Aisha"</span>;
+<span class="kw">int</span>    <span class="vr">studentAge</span>  = <span class="num">20</span>;
+<span class="kw">double</span> <span class="vr">gpa</span>         = <span class="num">3.8</span>;
+
+<span class="kw">void</span> <span class="met">PrintStudent</span>(<span class="kw">string</span> <span class="vr">n</span>, <span class="kw">int</span> <span class="vr">a</span>, <span class="kw">double</span> <span class="vr">g</span>)
+<span class="pun">{</span>
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{n}, age {a}, GPA {g}"</span>);
+<span class="pun">}</span>
+
+<span class="met">PrintStudent</span>(<span class="vr">studentName</span>, <span class="vr">studentAge</span>, <span class="vr">gpa</span>);</code></pre>
+            </div>
+          </details>
+
+          <p>
+            <strong>OOP</strong> solves this by bundling related data and the functions that
+            work on it into a single unit called an <strong>object</strong>. A student becomes
+            one entity that knows its own name, age, and GPA — and can print itself.
+          </p>
+
+          <details>
+            <summary>The OOP solution — data and behaviour together</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — OOP: everything in one place</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Student</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">Name</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span>    <span class="vr">Age</span>  <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">GPA</span>  <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Print</span>()
+        <span class="pun">=></span> <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{Name}, age {Age}, GPA {GPA}"</span>);
+<span class="pun">}</span>
+
+<span class="cls">Student</span> <span class="vr">s</span> = <span class="kw">new</span> <span class="cls">Student</span> <span class="pun">{</span> <span class="vr">Name</span> = <span class="str">"Aisha"</span>, <span class="vr">Age</span> = <span class="num">20</span>, <span class="vr">GPA</span> = <span class="num">3.8</span> <span class="pun">}</span>;
+<span class="vr">s</span>.<span class="met">Print</span>();  <span class="cmt">// Aisha, age 20, GPA 3.8</span></code></pre>
+            </div>
+          </details>
+
+          <p>
+            C# is object-oriented from the ground up. Every type you already used —
+            <code>string</code>, <code>Console</code>, <code>List&lt;T&gt;</code> — is a class.
+            OOP is not theory you bolt on later; it is the way C# is designed.
+          </p>
+
+          <div class="info-box note">
+            <strong>The four pillars of OOP</strong>
+            <p>
+              We cover all four across L10 and L11:
+              <strong>Encapsulation</strong> (hiding internals, today),
+              <strong>Abstraction</strong> (modelling only what matters, today),
+              <strong>Inheritance</strong> (extending classes, L11),
+              <strong>Polymorphism</strong> (one interface, many forms, L11).
+            </p>
+          </div>
         </div>
 
-        <h3>Procedural vs OOP — a side-by-side</h3>
-        <div class="code-block">
-          <div class="code-header"><span>Procedural approach</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="cmt">// Data lives in separate variables</span>
-<span class="kw">string</span> studentName = <span class="str">"Aisha"</span>;
-<span class="kw">int</span>    studentAge  = <span class="num">20</span>;
-<span class="kw">double</span> gpa         = <span class="num">3.8</span>;
-
-<span class="cmt">// Behaviour is a disconnected method</span>
-<span class="kw">void</span> <span class="met">PrintStudent</span>(<span class="kw">string</span> name, <span class="kw">int</span> age, <span class="kw">double</span> gpa)
-{
-    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"</span>{name}<span class="str">, age </span>{age}<span class="str">, GPA </span>{gpa}<span class="str">"</span>);
-}</code></pre>
+        <div class="info-box tip">
+          <strong>💡 Key Point</strong>
+          <p>
+            OOP bundles data and the functions that modify it into one unit.
+            The data can't be accidentally changed by unrelated code, and the
+            object itself knows how to do its own work.
+          </p>
         </div>
 
-        <div class="code-block">
-          <div class="code-header"><span>OOP approach</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="cmt">// Data and behaviour live together in a class</span>
-<span class="kw">class</span> <span class="cls">Student</span>
-{
-    <span class="kw">public string</span> Name { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>    Age  { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public double</span> GPA  { <span class="kw">get</span>; <span class="kw">set</span>; }
+        <!-- ──── 2. Classes vs Objects ──── -->
+        <div class="theory-content">
+          <h3>2. Classes vs Objects — Definition and Mental Model</h3>
 
-    <span class="kw">public void</span> <span class="met">Print</span>()
-    {
-        <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"</span>{Name}<span class="str">, age </span>{Age}<span class="str">, GPA </span>{GPA}<span class="str">"</span>);
-    }
-}
+          <p>
+            A <strong>class</strong> is a template that describes what shape an object will have.
+            Writing <code>class Car { ... }</code> does not create a car — it describes what
+            a car <em>is</em>. Think of a class like a cookie cutter: it defines the shape,
+            but it is not a cookie itself.
+          </p>
 
-<span class="cls">Student</span> s = <span class="kw">new</span> <span class="cls">Student</span> { Name = <span class="str">"Aisha"</span>, Age = <span class="num">20</span>, GPA = <span class="num">3.8</span> };
-s.<span class="met">Print</span>();</code></pre>
-        </div>
-      </section>
+          <details>
+            <summary>Declaring a class with properties and methods</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — A class is just a blueprint</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Car</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">Brand</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span>    <span class="vr">Year</span>  <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span>    <span class="vr">Speed</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
 
-      <!-- THEORY: CLASSES -->
-      <section class="section">
-        <h2>2. Classes and Objects</h2>
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Accelerate</span>(<span class="kw">int</span> <span class="vr">amount</span>) <span class="pun">=></span> <span class="vr">Speed</span> += <span class="vr">amount</span>;
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Brake</span>(<span class="kw">int</span> <span class="vr">amount</span>)      <span class="pun">=></span> <span class="vr">Speed</span> = <span class="cls">Math</span>.<span class="met">Max</span>(<span class="num">0</span>, <span class="vr">Speed</span> - <span class="vr">amount</span>);
 
-        <h3>Class vs Object (Instance)</h3>
-        <p>
-          A <strong>class</strong> is a <em>blueprint</em> — it describes what shape an object will have.
-          An <strong>object</strong> is a concrete <em>instance</em> built from that blueprint.
-          You can create many objects from one class, each with its own data.
-        </p>
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">PrintStatus</span>()
+        <span class="pun">=></span> <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{Brand} ({Year}) — {Speed} km/h"</span>);
+<span class="pun">}</span></code></pre>
+            </div>
+          </details>
 
-        <div class="info-box">
-          <strong>Analogy:</strong> A class is like an architectural drawing for a house.
-          An object is an actual house built from that drawing.
-          You can build many houses (objects) from one drawing (class).
-        </div>
+          <p>
+            An <strong>object</strong> is a concrete instance built from a class at runtime
+            using <code>new</code>. You can create many objects from one class and each is
+            independent — changing <code>car1.Speed</code> does not affect <code>car2.Speed</code>.
+          </p>
 
-        <div class="code-block">
-          <div class="code-header"><span>Creating and using objects</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Car</span>
-{
-    <span class="kw">public string</span> Brand { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>    Year  { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>    Speed { <span class="kw">get</span>; <span class="kw">set</span>; }
+          <details>
+            <summary>Creating independent objects from one class</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Two objects, same class, independent data</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cls">Car</span> <span class="vr">car1</span> = <span class="kw">new</span> <span class="cls">Car</span> <span class="pun">{</span> <span class="vr">Brand</span> = <span class="str">"Toyota"</span>, <span class="vr">Year</span> = <span class="num">2024</span> <span class="pun">}</span>;
+<span class="cls">Car</span> <span class="vr">car2</span> = <span class="kw">new</span> <span class="cls">Car</span> <span class="pun">{</span> <span class="vr">Brand</span> = <span class="str">"BMW"</span>,    <span class="vr">Year</span> = <span class="num">2025</span> <span class="pun">}</span>;
 
-    <span class="kw">public void</span> <span class="met">Accelerate</span>(<span class="kw">int</span> amount) => Speed += amount;
-    <span class="kw">public void</span> <span class="met">Brake</span>(<span class="kw">int</span> amount)     => Speed = <span class="cls">Math</span>.<span class="met">Max</span>(<span class="num">0</span>, Speed - amount);
+<span class="vr">car1</span>.<span class="met">Accelerate</span>(<span class="num">60</span>);
+<span class="vr">car2</span>.<span class="met">Accelerate</span>(<span class="num">100</span>);
 
-    <span class="kw">public void</span> <span class="met">PrintStatus</span>()
-        => <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"</span>{Brand} ({Year})<span class="str"> — </span>{Speed}<span class="str"> km/h"</span>);
-}
-
-<span class="cmt">// Two separate objects — independent data</span>
-<span class="cls">Car</span> car1 = <span class="kw">new</span> <span class="cls">Car</span> { Brand = <span class="str">"Toyota"</span>, Year = <span class="num">2024</span> };
-<span class="cls">Car</span> car2 = <span class="kw">new</span> <span class="cls">Car</span> { Brand = <span class="str">"BMW"</span>,    Year = <span class="num">2025</span> };
-
-car1.<span class="met">Accelerate</span>(<span class="num">60</span>);
-car2.<span class="met">Accelerate</span>(<span class="num">100</span>);
-
-car1.<span class="met">PrintStatus</span>();  <span class="cmt">// Toyota (2024) — 60 km/h</span>
-car2.<span class="met">PrintStatus</span>();  <span class="cmt">// BMW (2025) — 100 km/h</span></code></pre>
+<span class="vr">car1</span>.<span class="met">PrintStatus</span>();  <span class="cmt">// Toyota (2024) — 60 km/h</span>
+<span class="vr">car2</span>.<span class="met">PrintStatus</span>();  <span class="cmt">// BMW (2025) — 100 km/h</span></code></pre>
+            </div>
+          </details>
         </div>
 
-        <h3>Where to place classes</h3>
-        <p>In .NET 10 top-level programs, define classes <strong>after</strong> the top-level statements:</p>
-        <div class="code-block">
-          <div class="code-header"><span>Program.cs — class after top-level code</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="cmt">// Top-level statements come first</span>
-<span class="cls">Car</span> myCar = <span class="kw">new</span> <span class="cls">Car</span> { Brand = <span class="str">"Lada"</span>, Year = <span class="num">1999</span> };
-myCar.<span class="met">Accelerate</span>(<span class="num">40</span>);
-myCar.<span class="met">PrintStatus</span>();
-
-<span class="cmt">// Class definitions come after</span>
-<span class="kw">class</span> <span class="cls">Car</span>
-{
-    <span class="kw">public string</span> Brand { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>    Year  { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>    Speed { <span class="kw">get</span>; <span class="kw">set</span>; }
-
-    <span class="kw">public void</span> <span class="met">Accelerate</span>(<span class="kw">int</span> amount) => Speed += amount;
-    <span class="kw">public void</span> <span class="met">PrintStatus</span>()
-        => <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"</span>{Brand} ({Year})<span class="str"> — </span>{Speed}<span class="str"> km/h"</span>);
-}</code></pre>
+        <div class="info-box tip">
+          <strong>💡 Key Point</strong>
+          <p>
+            A class is a blueprint; an object is an instance. Each <code>new</code> creates an
+            independent object with its own data.
+          </p>
         </div>
 
         <div class="info-box warning">
-          <strong>Best practice:</strong> For larger projects, put each class in its own file
-          (e.g., <code>Car.cs</code>, <code>Student.cs</code>). For today's exercises, putting
-          everything in <code>Program.cs</code> is fine.
-        </div>
-      </section>
-
-      <!-- THEORY: FIELDS -->
-      <section class="section">
-        <h2>3. Fields</h2>
-        <p>
-          A <strong>field</strong> is a variable declared directly inside a class (not inside a method).
-          Fields store the <em>state</em> of an object.
-        </p>
-        <div class="code-block">
-          <div class="code-header"><span>Fields — declaration and defaults</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">BankAccount</span>
-{
-    <span class="cmt">// Fields — per-instance data</span>
-    <span class="kw">public string</span> Owner;
-    <span class="kw">public decimal</span> Balance;       <span class="cmt">// default: 0</span>
-    <span class="kw">public bool</span>    IsActive;      <span class="cmt">// default: false</span>
-    <span class="kw">public string</span>  AccountNumber; <span class="cmt">// default: null</span>
-
-    <span class="cmt">// Field with explicit default</span>
-    <span class="kw">public decimal</span> InterestRate = <span class="num">0.05m</span>;
-}</code></pre>
+          <strong>Where to place classes</strong>
+          <p>
+            In .NET 10 top-level programs, define classes <em>after</em> the top-level statements.
+            For larger projects, put each class in its own file (<code>Car.cs</code>,
+            <code>Student.cs</code>). For today's exercises, one file is fine.
+          </p>
         </div>
 
-        <div class="warning-box">
-          <strong>Public fields are usually bad.</strong> Anyone can write
-          <code>account.Balance = -999999;</code> and nothing will stop them.
-          Use <strong>properties</strong> with controlled access instead (next section).
-        </div>
-      </section>
+        <!-- ──── 3. Fields and Properties ──── -->
+        <div class="theory-content">
+          <h3>3. Fields and Properties</h3>
 
-      <!-- THEORY: ACCESS MODIFIERS -->
-      <section class="section">
-        <h2>4. Access Modifiers</h2>
-        <p>Access modifiers control who can see and modify members of a class.</p>
+          <p>
+            A <strong>field</strong> is a variable inside a class, but making fields
+            <code>public</code> is almost always wrong — anyone can write
+            <code>account.Balance = -999999</code> with no protection. Modern C# uses
+            <strong>properties</strong> instead: they look like fields from the outside but
+            use <code>get</code>/<code>set</code> accessors to control access. Think of
+            properties like the buttons on a microwave — you don't rewire the magnetron
+            directly; the front panel decides whether your request makes sense.
+          </p>
+
+          <p>
+            The most common form is the <strong>auto-property</strong>: you declare
+            <code>{ get; set; }</code> and the compiler generates the backing field for you.
+            C# also supports <strong>read-only</strong>, <strong>init-only</strong>, and
+            <strong>computed</strong> properties.
+          </p>
+
+          <details>
+            <summary>Auto-properties, init-only, and computed properties</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Property flavours in one class</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Product</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">string</span>  <span class="vr">Name</span>  <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>   <span class="cmt">// auto: read + write</span>
+    <span class="kw">public</span> <span class="kw">decimal</span> <span class="vr">Price</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span>     <span class="vr">Stock</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">string</span>  <span class="vr">Category</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>  <span class="cmt">// read-only (set in ctor)</span>
+    <span class="kw">public</span> <span class="kw">string</span>  <span class="vr">Sku</span>  <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">init</span>; <span class="pun">}</span> <span class="cmt">// init-only</span>
+    <span class="kw">public</span> <span class="kw">bool</span>    <span class="vr">IsAvailable</span>  <span class="pun">=></span> <span class="vr">Stock</span> > <span class="num">0</span>;       <span class="cmt">// computed</span>
+    <span class="kw">public</span> <span class="kw">decimal</span> <span class="vr">PriceWithTax</span> <span class="pun">=></span> <span class="vr">Price</span> * <span class="num">1.12m</span>;  <span class="cmt">// computed</span>
+
+    <span class="kw">public</span> <span class="cls">Product</span>(<span class="kw">string</span> <span class="vr">name</span>, <span class="kw">decimal</span> <span class="vr">price</span>, <span class="kw">string</span> <span class="vr">category</span>)
+    <span class="pun">{</span> <span class="vr">Name</span> = <span class="vr">name</span>; <span class="vr">Price</span> = <span class="vr">price</span>; <span class="vr">Category</span> = <span class="vr">category</span>; <span class="pun">}</span>
+<span class="pun">}</span></code></pre>
+            </div>
+          </details>
+
+          <p>
+            When you need <strong>validation</strong>, write a full property with a private
+            backing field. The <code>set</code> accessor receives the incoming value as
+            <code>value</code> and can reject it. You can also use <code>private set</code>
+            to allow the class itself to modify a property while blocking outside code.
+          </p>
+
+          <details>
+            <summary>Full property with validation and private set</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Controlled access with validation</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Person</span>
+<span class="pun">{</span>
+    <span class="kw">private</span> <span class="kw">int</span> <span class="vr">_age</span>;  <span class="cmt">// backing field</span>
+
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">Name</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span> <span class="vr">Age</span>
+    <span class="pun">{</span>
+        <span class="kw">get</span> <span class="pun">{</span> <span class="kw2">return</span> <span class="vr">_age</span>; <span class="pun">}</span>
+        <span class="kw">set</span>
+        <span class="pun">{</span>
+            <span class="kw2">if</span> (<span class="vr">value</span> &lt; <span class="num">0</span> || <span class="vr">value</span> > <span class="num">150</span>)
+                <span class="kw2">throw</span> <span class="kw">new</span> <span class="cls">ArgumentOutOfRangeException</span>(<span class="str">"Age must be 0–150"</span>);
+            <span class="vr">_age</span> = <span class="vr">value</span>;
+        <span class="pun">}</span>
+    <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span> <span class="vr">LoginCount</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">private</span> <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">RecordLogin</span>() <span class="pun">=></span> <span class="vr">LoginCount</span>++;
+<span class="pun">}</span></code></pre>
+            </div>
+          </details>
+
+          <details>
+            <summary>Using the Person class — what gets blocked</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Validation and private set in action</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cls">Person</span> <span class="vr">p</span> = <span class="kw">new</span> <span class="cls">Person</span> <span class="pun">{</span> <span class="vr">Name</span> = <span class="str">"Dias"</span> <span class="pun">}</span>;
+<span class="vr">p</span>.<span class="vr">Age</span> = <span class="num">25</span>;            <span class="cmt">// OK</span>
+<span class="vr">p</span>.<span class="met">RecordLogin</span>();
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">p</span>.<span class="vr">LoginCount</span>);  <span class="cmt">// 1</span>
+<span class="cmt">// p.Age = -5;        // throws ArgumentOutOfRangeException</span>
+<span class="cmt">// p.LoginCount = 99; // ERROR — private set</span></code></pre>
+            </div>
+          </details>
+        </div>
+
+        <div class="info-box tip">
+          <strong>💡 Key Point</strong>
+          <p>
+            Use auto-properties for simple storage, full properties for validation,
+            <code>init</code> for immutable creation-time data, and <code>=></code>
+            for computed values. Avoid public fields.
+          </p>
+        </div>
+
+        <!-- ──── 4. Access Modifiers ──── -->
+        <div class="theory-content">
+          <h3>4. Access Modifiers</h3>
+
+          <p>
+            Access modifiers control who can see and modify members. The purpose is
+            <strong>encapsulation</strong>: hide internals and expose only what callers need.
+            Think of a vending machine — the coin slot and buttons are <code>public</code>;
+            the coin-counting motor is <code>private</code>.
+          </p>
+
+          <p>
+            The rule of thumb: make everything <code>private</code> by default. Only promote
+            a member to <code>public</code> when outside code genuinely needs it. This
+            minimises the surface area for bugs.
+          </p>
+
+          <details>
+            <summary>Encapsulation in practice — public vs private</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Hiding internals behind a public API</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Wallet</span>
+<span class="pun">{</span>
+    <span class="kw">private</span> <span class="kw">decimal</span> <span class="vr">_cash</span> = <span class="num">0</span>;       <span class="cmt">// hidden</span>
+    <span class="kw">public</span> <span class="kw">decimal</span> <span class="vr">Cash</span> <span class="pun">=></span> <span class="vr">_cash</span>; <span class="cmt">// read-only view</span>
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Add</span>(<span class="kw">decimal</span> <span class="vr">amount</span>)
+    <span class="pun">{</span>
+        <span class="kw2">if</span> (<span class="vr">amount</span> &lt;= <span class="num">0</span>) <span class="kw2">return</span>;
+        <span class="vr">_cash</span> += <span class="vr">amount</span>;
+    <span class="pun">}</span>
+<span class="pun">}</span>
+
+<span class="cls">Wallet</span> <span class="vr">w</span> = <span class="kw">new</span> <span class="cls">Wallet</span>();
+<span class="vr">w</span>.<span class="met">Add</span>(<span class="num">100</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">w</span>.<span class="vr">Cash</span>);  <span class="cmt">// 100</span>
+<span class="cmt">// w._cash = 999;  // ERROR — _cash is private</span></code></pre>
+            </div>
+          </details>
+        </div>
 
         <table class="data-table">
           <thead>
@@ -225,7 +382,7 @@ myCar.<span class="met">PrintStatus</span>();
             <tr>
               <td><code>private</code></td>
               <td>Only this class</td>
-              <td>Fields, helper methods (default if omitted)</td>
+              <td>Backing fields, helper methods (default if omitted)</td>
             </tr>
             <tr>
               <td><code>protected</code></td>
@@ -235,254 +392,253 @@ myCar.<span class="met">PrintStatus</span>();
             <tr>
               <td><code>internal</code></td>
               <td>Same assembly/project</td>
-              <td>Library classes not meant for external use</td>
+              <td>Library classes not for external use</td>
             </tr>
           </tbody>
         </table>
 
-        <div class="info-box">
-          <strong>Rule of thumb:</strong> Make everything <code>private</code> by default.
-          Only make something <code>public</code> when external code genuinely needs it.
-          This is the core of <em>encapsulation</em>.
-        </div>
-      </section>
-
-      <!-- THEORY: PROPERTIES -->
-      <section class="section">
-        <h2>5. Properties</h2>
-        <p>
-          A <strong>property</strong> is a member that looks like a field from the outside
-          but uses <code>get</code>/<code>set</code> accessors — so the class can validate or transform values.
-        </p>
-
-        <h3>Full property with backing field</h3>
-        <div class="code-block">
-          <div class="code-header"><span>Manual property with validation</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Person</span>
-{
-    <span class="kw">private int</span> _age; <span class="cmt">// backing field — private, convention: _camelCase</span>
-
-    <span class="kw">public int</span> Age
-    {
-        <span class="kw">get</span> { <span class="kw">return</span> _age; }
-        <span class="kw">set</span>
-        {
-            <span class="kw">if</span> (value &lt; <span class="num">0</span> || value &gt; <span class="num">150</span>)
-                <span class="kw">throw new</span> <span class="cls">ArgumentOutOfRangeException</span>(<span class="str">"Age must be 0–150"</span>);
-            _age = value;
-        }
-    }
-}
-
-<span class="cls">Person</span> p = <span class="kw">new</span> <span class="cls">Person</span>();
-p.Age = <span class="num">25</span>;   <span class="cmt">// OK — calls set accessor</span>
-p.Age = <span class="num">-5</span>;   <span class="cmt">// throws ArgumentOutOfRangeException</span>
-<span class="kw">int</span> a = p.Age; <span class="cmt">// OK — calls get accessor</span></code></pre>
+        <div class="info-box tip">
+          <strong>💡 Key Point</strong>
+          <p>
+            Default to <code>private</code>. Only make a member <code>public</code>
+            when outside code genuinely needs access. This is the core of encapsulation.
+          </p>
         </div>
 
-        <h3>Auto-property (most common)</h3>
-        <p>
-          When you don't need validation, C# can generate the backing field automatically.
-          This is called an <strong>auto-implemented property</strong>.
-        </p>
-        <div class="code-block">
-          <div class="code-header"><span>Auto-properties</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Product</span>
-{
-    <span class="kw">public string</span>  Name     { <span class="kw">get</span>; <span class="kw">set</span>; }   <span class="cmt">// read + write</span>
-    <span class="kw">public decimal</span> Price    { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>     Stock    { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public string</span>  Category { <span class="kw">get</span>; }        <span class="cmt">// read-only (set only in constructor)</span>
+        <!-- ──── 5. Constructors ──── -->
+        <div class="theory-content">
+          <h3>5. Constructors — Default, Parameterised, Chaining, Primary</h3>
 
-    <span class="cmt">// Computed property — no setter, derived from other data</span>
-    <span class="kw">public bool</span> IsAvailable =&gt; Stock &gt; <span class="num">0</span>;
-    <span class="kw">public decimal</span> PriceWithTax =&gt; Price * <span class="num">1.12m</span>;
-}
+          <p>
+            A <strong>constructor</strong> is a special method that runs when you create
+            an object with <code>new</code>. Its job is to put the object into a valid
+            initial state. Think of it like a phone assembly line — you never receive a
+            phone with no screen and a note saying "please attach screen yourself."
+          </p>
 
-<span class="cls">Product</span> prod = <span class="kw">new</span> <span class="cls">Product</span> { Name = <span class="str">"Laptop"</span>, Price = <span class="num">850m</span>, Stock = <span class="num">5</span> };
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(prod.IsAvailable);   <span class="cmt">// True</span>
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(prod.PriceWithTax);  <span class="cmt">// 952.00</span></code></pre>
+          <p>
+            If you write no constructor, C# provides a default one that sets everything
+            to 0 / null / false. As soon as you write <em>any</em> constructor, the
+            auto-generated one disappears. If you want both parameterless and parameterised
+            creation, you must write both explicitly.
+          </p>
+
+          <details>
+            <summary>Parameterless and parameterised constructors</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Two constructors with chaining</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Student</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">Name</span>    <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span>    <span class="vr">Age</span>     <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">Faculty</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="cls">Student</span>() <span class="pun">{</span> <span class="vr">Faculty</span> = <span class="str">"Undeclared"</span>; <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="cls">Student</span>(<span class="kw">string</span> <span class="vr">name</span>, <span class="kw">int</span> <span class="vr">age</span>, <span class="kw">string</span> <span class="vr">faculty</span>) : <span class="kw">this</span>()
+    <span class="pun">{</span> <span class="vr">Name</span> = <span class="vr">name</span>; <span class="vr">Age</span> = <span class="vr">age</span>; <span class="vr">Faculty</span> = <span class="vr">faculty</span>; <span class="pun">}</span>
+<span class="pun">}</span></code></pre>
+            </div>
+          </details>
+
+          <details>
+            <summary>Using the Student constructors</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Three ways to create a Student</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cls">Student</span> <span class="vr">s1</span> = <span class="kw">new</span> <span class="cls">Student</span>();                               <span class="cmt">// parameterless</span>
+<span class="cls">Student</span> <span class="vr">s2</span> = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Dias"</span>, <span class="num">21</span>, <span class="str">"IT"</span>);               <span class="cmt">// parameterised</span>
+<span class="cls">Student</span> <span class="vr">s3</span> = <span class="kw">new</span> <span class="cls">Student</span> <span class="pun">{</span> <span class="vr">Name</span> = <span class="str">"Aisha"</span>, <span class="vr">Age</span> = <span class="num">20</span> <span class="pun">}</span>;  <span class="cmt">// object initialiser</span>
+
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">s1</span>.<span class="vr">Faculty</span>);  <span class="cmt">// Undeclared</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">s2</span>.<span class="vr">Faculty</span>);  <span class="cmt">// IT</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">s3</span>.<span class="vr">Faculty</span>);  <span class="cmt">// Undeclared</span></code></pre>
+            </div>
+          </details>
+
+          <p>
+            Constructor <strong>chaining</strong> (<code>: this(...)</code>) lets one
+            constructor delegate to another, avoiding duplicated initialisation.
+            For simple classes, C# 12 <strong>primary constructors</strong> put parameters
+            directly in the class header — even less boilerplate.
+          </p>
+
+          <details>
+            <summary>Constructor chaining — Rectangle with a square shortcut</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — One constructor calls another</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Rectangle</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">Width</span>  <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">Height</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="cls">Rectangle</span>(<span class="kw">double</span> <span class="vr">w</span>, <span class="kw">double</span> <span class="vr">h</span>) <span class="pun">{</span> <span class="vr">Width</span> = <span class="vr">w</span>; <span class="vr">Height</span> = <span class="vr">h</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="cls">Rectangle</span>(<span class="kw">double</span> <span class="vr">side</span>) : <span class="kw">this</span>(<span class="vr">side</span>, <span class="vr">side</span>) <span class="pun">{</span> <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="kw">double</span> <span class="met">Area</span>() <span class="pun">=></span> <span class="vr">Width</span> * <span class="vr">Height</span>;
+<span class="pun">}</span>
+
+<span class="cls">Rectangle</span> <span class="vr">r1</span> = <span class="kw">new</span> <span class="cls">Rectangle</span>(<span class="num">4</span>, <span class="num">6</span>);
+<span class="cls">Rectangle</span> <span class="vr">r2</span> = <span class="kw">new</span> <span class="cls">Rectangle</span>(<span class="num">5</span>);  <span class="cmt">// 5×5 square</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">r1</span>.<span class="met">Area</span>());  <span class="cmt">// 24</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">r2</span>.<span class="met">Area</span>());  <span class="cmt">// 25</span></code></pre>
+            </div>
+          </details>
+
+          <details>
+            <summary>Primary constructor (C# 12) — parameters in the class header</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Modern shorthand</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Course</span>(<span class="kw">string</span> <span class="vr">title</span>, <span class="kw">int</span> <span class="vr">credits</span>)
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">Title</span>   <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span> = <span class="vr">title</span>;
+    <span class="kw">public</span> <span class="kw">int</span>    <span class="vr">Credits</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span> = <span class="vr">credits</span>;
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Print</span>() <span class="pun">=></span> <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{Title} ({Credits} credits)"</span>);
+<span class="pun">}</span>
+
+<span class="cls">Course</span> <span class="vr">c</span> = <span class="kw">new</span> <span class="cls">Course</span>(<span class="str">"Calculus"</span>, <span class="num">4</span>);
+<span class="vr">c</span>.<span class="met">Print</span>();  <span class="cmt">// Calculus (4 credits)</span></code></pre>
+            </div>
+          </details>
         </div>
 
-        <h3>Property accessibility levels</h3>
-        <div class="code-block">
-          <div class="code-header"><span>init-only and private set</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Employee</span>
-{
-    <span class="cmt">// Can only be set at object creation (object initializer or constructor)</span>
-    <span class="kw">public string</span> Id   { <span class="kw">get</span>; <span class="kw">init</span>; }
-
-    <span class="cmt">// Can be set freely inside the class, read-only outside</span>
-    <span class="kw">public int</span> LoginCount { <span class="kw">get</span>; <span class="kw">private set</span>; }
-
-    <span class="kw">public void</span> <span class="met">RecordLogin</span>() => LoginCount++;
-}
-
-<span class="cls">Employee</span> emp = <span class="kw">new</span> <span class="cls">Employee</span> { Id = <span class="str">"EMP001"</span> };
-emp.<span class="met">RecordLogin</span>();
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(emp.LoginCount); <span class="cmt">// 1</span>
-<span class="cmt">// emp.Id = "EMP002";         // ERROR — init-only</span>
-<span class="cmt">// emp.LoginCount = 99;       // ERROR — private set</span></code></pre>
-        </div>
-      </section>
-
-      <!-- THEORY: CONSTRUCTORS -->
-      <section class="section">
-        <h2>6. Constructors</h2>
-        <p>
-          A <strong>constructor</strong> is a special method that runs when an object is created with <code>new</code>.
-          Its job is to put the object into a valid initial state.
-        </p>
-
-        <h3>Default constructor</h3>
-        <p>If you define no constructor, C# provides a parameterless one that sets all fields to their defaults.</p>
-
-        <h3>Custom constructors</h3>
-        <div class="code-block">
-          <div class="code-header"><span>Constructor basics</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Student</span>
-{
-    <span class="kw">public string</span> Name    { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>    Age     { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public double</span> GPA     { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public string</span> Faculty { <span class="kw">get</span>; <span class="kw">set</span>; }
-
-    <span class="cmt">// Parameterless constructor</span>
-    <span class="kw">public</span> <span class="cls">Student</span>()
-    {
-        Faculty = <span class="str">"Undeclared"</span>;
-        GPA     = <span class="num">0.0</span>;
-    }
-
-    <span class="cmt">// Parameterised constructor</span>
-    <span class="kw">public</span> <span class="cls">Student</span>(<span class="kw">string</span> name, <span class="kw">int</span> age, <span class="kw">string</span> faculty)
-    {
-        Name    = name;
-        Age     = age;
-        Faculty = faculty;
-        GPA     = <span class="num">0.0</span>;
-    }
-}
-
-<span class="cmt">// Three ways to create a Student</span>
-<span class="cls">Student</span> s1 = <span class="kw">new</span> <span class="cls">Student</span>();                              <span class="cmt">// parameterless</span>
-<span class="cls">Student</span> s2 = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Dias"</span>, <span class="num">21</span>, <span class="str">"IT"</span>);              <span class="cmt">// parameterised</span>
-<span class="cls">Student</span> s3 = <span class="kw">new</span> <span class="cls">Student</span> { Name = <span class="str">"Aisha"</span>, Age = <span class="num">20</span> };   <span class="cmt">// object initializer</span></code></pre>
+        <div class="info-box tip">
+          <strong>💡 Key Point</strong>
+          <p>
+            Constructors guarantee objects are valid from the moment they exist.
+            Use chaining (<code>: this()</code>) to avoid duplicating initialisation
+            logic between overloads.
+          </p>
         </div>
 
-        <h3>Constructor chaining with <code>this()</code></h3>
-        <p>One constructor can call another to avoid code duplication:</p>
-        <div class="code-block">
-          <div class="code-header"><span>Constructor chaining</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Rectangle</span>
-{
-    <span class="kw">public double</span> Width  { <span class="kw">get</span>; }
-    <span class="kw">public double</span> Height { <span class="kw">get</span>; }
+        <!-- ──── 6. The this keyword ──── -->
+        <div class="theory-content">
+          <h3>6. The <code>this</code> Keyword</h3>
 
-    <span class="cmt">// Main constructor</span>
-    <span class="kw">public</span> <span class="cls">Rectangle</span>(<span class="kw">double</span> width, <span class="kw">double</span> height)
-    {
-        Width  = width;
-        Height = height;
-    }
+          <p>
+            Inside a class, <code>this</code> refers to <em>the current instance</em>.
+            Think of it like the word "I" — when a Circle says <code>this.Radius</code>,
+            it means "the radius of the specific circle this code is running on." Most of
+            the time you can omit it, but you need it when a parameter name shadows a property.
+          </p>
 
-    <span class="cmt">// Square shortcut — delegates to main constructor</span>
-    <span class="kw">public</span> <span class="cls">Rectangle</span>(<span class="kw">double</span> side) : <span class="kw">this</span>(side, side) { }
+          <details>
+            <summary>Disambiguating a parameter from a property</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — this.Radius vs radius</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Circle</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">Radius</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
 
-    <span class="kw">public double</span> <span class="met">Area</span>()      => Width * Height;
-    <span class="kw">public double</span> <span class="met">Perimeter</span>() => <span class="num">2</span> * (Width + Height);
-}
+    <span class="kw">public</span> <span class="cls">Circle</span>(<span class="kw">double</span> <span class="vr">radius</span>)
+    <span class="pun">{</span>
+        <span class="kw">this</span>.<span class="vr">Radius</span> = <span class="vr">radius</span>;  <span class="cmt">// this.Radius = property, radius = parameter</span>
+    <span class="pun">}</span>
 
-<span class="cls">Rectangle</span> r1 = <span class="kw">new</span> <span class="cls">Rectangle</span>(<span class="num">4</span>, <span class="num">6</span>);
-<span class="cls">Rectangle</span> r2 = <span class="kw">new</span> <span class="cls">Rectangle</span>(<span class="num">5</span>);    <span class="cmt">// 5×5 square</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="met">Area</span>() <span class="pun">=></span> <span class="cls">Math</span>.<span class="vr">PI</span> * <span class="vr">Radius</span> * <span class="vr">Radius</span>;
+<span class="pun">}</span></code></pre>
+            </div>
+          </details>
 
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(r1.<span class="met">Area</span>());      <span class="cmt">// 24</span>
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(r2.<span class="met">Perimeter</span>()); <span class="cmt">// 20</span></code></pre>
+          <p>
+            A more advanced use is the <strong>fluent interface</strong> — a method returns
+            <code>this</code> so the caller can chain calls like
+            <code>circle.Scale(2).Area()</code>.
+          </p>
+
+          <details>
+            <summary>Fluent interface — returning this for method chaining</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Chaining methods with return this</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Circle</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">Radius</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="cls">Circle</span>(<span class="kw">double</span> <span class="vr">radius</span>) <span class="pun">{</span> <span class="kw">this</span>.<span class="vr">Radius</span> = <span class="vr">radius</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="met">Area</span>() <span class="pun">=></span> <span class="cls">Math</span>.<span class="vr">PI</span> * <span class="vr">Radius</span> * <span class="vr">Radius</span>;
+
+    <span class="kw">public</span> <span class="cls">Circle</span> <span class="met">Scale</span>(<span class="kw">double</span> <span class="vr">factor</span>)
+    <span class="pun">{</span>
+        <span class="vr">Radius</span> *= <span class="vr">factor</span>;
+        <span class="kw2">return</span> <span class="kw">this</span>;  <span class="cmt">// return the same object</span>
+    <span class="pun">}</span>
+<span class="pun">}</span>
+
+<span class="cls">Circle</span> <span class="vr">c</span> = <span class="kw">new</span> <span class="cls">Circle</span>(<span class="num">5</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">c</span>.<span class="met">Scale</span>(<span class="num">2</span>).<span class="met">Area</span>());  <span class="cmt">// 314.159... (r=10)</span></code></pre>
+            </div>
+          </details>
         </div>
 
-        <h3>Static constructor</h3>
-        <p>
-          A <code>static</code> constructor runs once the first time the class is used.
-          Used to initialise static data:
-        </p>
-        <div class="code-block">
-          <div class="code-header"><span>Static constructor</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">AppConfig</span>
-{
-    <span class="kw">public static string</span> Version { <span class="kw">get</span>; }
-    <span class="kw">public static string</span> AppName { <span class="kw">get</span>; }
-
-    <span class="cmt">// Runs once — no parameters allowed</span>
-    <span class="kw">static</span> <span class="cls">AppConfig</span>()
-    {
-        Version = <span class="str">"1.0.0"</span>;
-        AppName = <span class="str">"My App"</span>;
-    }
-}
-
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="cls">AppConfig</span>.Version); <span class="cmt">// 1.0.0</span></code></pre>
+        <div class="info-box note">
+          <strong>💡 Key Point</strong>
+          <p>
+            <code>this</code> refers to the current object. Use it to disambiguate
+            parameters from properties and to chain constructors.
+          </p>
         </div>
-      </section>
 
-      <!-- THEORY: THIS KEYWORD -->
-      <section class="section">
-        <h2>7. The <code>this</code> Keyword</h2>
-        <p>
-          Inside a class, <code>this</code> refers to <em>the current instance</em>.
-          Most common uses:
-        </p>
-        <div class="code-block">
-          <div class="code-header"><span>Using this to disambiguate</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Circle</span>
-{
-    <span class="kw">public double</span> Radius { <span class="kw">get</span>; <span class="kw">set</span>; }
+        <!-- ──── 7. Static Members ──── -->
+        <div class="theory-content">
+          <h3>7. Static Members</h3>
 
-    <span class="cmt">// Parameter "radius" shadows the property — use this.Radius to mean the field</span>
-    <span class="kw">public</span> <span class="cls">Circle</span>(<span class="kw">double</span> radius)
-    {
-        <span class="kw">this</span>.Radius = radius; <span class="cmt">// "this.Radius" = property; "radius" = parameter</span>
-    }
+          <p>
+            A <code>static</code> member belongs to the <em>class itself</em>, not to any
+            particular instance. Think of the total student enrolment at a university —
+            it belongs to the university (the class), not to any one student (an instance).
+            You access static members via the class name: <code>Counter.GetTotal()</code>.
+          </p>
 
-    <span class="kw">public double</span> <span class="met">Area</span>()         => <span class="cls">Math</span>.PI * Radius * Radius;
-    <span class="kw">public double</span> <span class="met">Circumference</span>() => <span class="num">2</span> * <span class="cls">Math</span>.PI * Radius;
+          <details>
+            <summary>Static field and method — auto-incrementing ID</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Shared data via static</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">Counter</span>
+<span class="pun">{</span>
+    <span class="kw">private</span> <span class="kw">static</span> <span class="kw">int</span> <span class="vr">_total</span> = <span class="num">0</span>;  <span class="cmt">// shared</span>
+    <span class="kw">public</span> <span class="kw">int</span> <span class="vr">Id</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>
 
-    <span class="cmt">// Fluent interface — return this to allow chaining</span>
-    <span class="kw">public</span> <span class="cls">Circle</span> <span class="met">Scale</span>(<span class="kw">double</span> factor) { Radius *= factor; <span class="kw">return this</span>; }
-}
+    <span class="kw">public</span> <span class="cls">Counter</span>() <span class="pun">{</span> <span class="vr">_total</span>++; <span class="vr">Id</span> = <span class="vr">_total</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">int</span> <span class="met">GetTotal</span>() <span class="pun">=></span> <span class="vr">_total</span>;
+<span class="pun">}</span></code></pre>
+            </div>
+          </details>
 
-<span class="cls">Circle</span> c = <span class="kw">new</span> <span class="cls">Circle</span>(<span class="num">5</span>);
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(c.<span class="met">Scale</span>(<span class="num">2</span>).<span class="met">Area</span>());  <span class="cmt">// 314.16... (r=10)</span></code></pre>
-        </div>
-      </section>
+          <details>
+            <summary>Using the Counter — each new object increments the shared total</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Static vs instance access</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cls">Counter</span> <span class="vr">a</span> = <span class="kw">new</span> <span class="cls">Counter</span>();  <span class="cmt">// Id=1</span>
+<span class="cls">Counter</span> <span class="vr">b</span> = <span class="kw">new</span> <span class="cls">Counter</span>();  <span class="cmt">// Id=2</span>
+<span class="cls">Counter</span> <span class="vr">cc</span> = <span class="kw">new</span> <span class="cls">Counter</span>(); <span class="cmt">// Id=3</span>
 
-      <!-- THEORY: STATIC MEMBERS -->
-      <section class="section">
-        <h2>8. Static Members</h2>
-        <p>
-          A <code>static</code> member belongs to the <em>class itself</em>, not to any particular instance.
-          All instances share the same static data.
-        </p>
-        <div class="code-block">
-          <div class="code-header"><span>Static field and method</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="kw">class</span> <span class="cls">Counter</span>
-{
-    <span class="kw">private static int</span> _total = <span class="num">0</span>;  <span class="cmt">// shared across all instances</span>
-    <span class="kw">public int</span> Id { <span class="kw">get</span>; }
-
-    <span class="kw">public</span> <span class="cls">Counter</span>()
-    {
-        _total++;
-        Id = _total;
-    }
-
-    <span class="kw">public static int</span> <span class="met">GetTotal</span>() => _total;
-}
-
-<span class="cls">Counter</span> a = <span class="kw">new</span> <span class="cls">Counter</span>(); <span class="cmt">// Id=1, total=1</span>
-<span class="cls">Counter</span> b = <span class="kw">new</span> <span class="cls">Counter</span>(); <span class="cmt">// Id=2, total=2</span>
-<span class="cls">Counter</span> c = <span class="kw">new</span> <span class="cls">Counter</span>(); <span class="cmt">// Id=3, total=3</span>
-
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="cls">Counter</span>.<span class="met">GetTotal</span>()); <span class="cmt">// 3</span></code></pre>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="cls">Counter</span>.<span class="met">GetTotal</span>());  <span class="cmt">// 3 (class name!)</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">a</span>.<span class="vr">Id</span>);                 <span class="cmt">// 1 (instance)</span></code></pre>
+            </div>
+          </details>
         </div>
 
         <table class="data-table">
@@ -491,268 +647,656 @@ emp.<span class="met">RecordLogin</span>();
           </thead>
           <tbody>
             <tr><td>Accessed via object: <code>obj.Method()</code></td><td>Accessed via class: <code>Class.Method()</code></td></tr>
-            <tr><td>Each object has its own copy of data</td><td>One shared copy for all objects</td></tr>
+            <tr><td>Each object has its own copy</td><td>One shared copy for all objects</td></tr>
             <tr><td>Can use <code>this</code></td><td>Cannot use <code>this</code></td></tr>
-            <tr><td>Example: <code>car.Speed</code></td><td>Example: <code>Math.Sqrt()</code>, <code>Console.WriteLine()</code></td></tr>
+            <tr><td>Example: <code>car.Speed</code></td><td>Example: <code>Math.Sqrt()</code></td></tr>
           </tbody>
         </table>
-      </section>
 
-      <!-- THEORY: VALUE vs REFERENCE -->
-      <section class="section">
-        <h2>9. Value Types vs Reference Types (Revisited)</h2>
-        <p>
-          We saw this briefly in L02. Now it matters practically because <strong>classes are reference types</strong>.
-        </p>
-        <div class="code-block">
-          <div class="code-header"><span>Reference type behaviour</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="cls">Student</span> s1 = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Aisha"</span>, <span class="num">20</span>, <span class="str">"IT"</span>);
-<span class="cls">Student</span> s2 = s1;  <span class="cmt">// s2 points to the SAME object, not a copy!</span>
-
-s2.Name = <span class="str">"Bekzod"</span>;
-
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(s1.Name); <span class="cmt">// Bekzod  ← changed through s2</span>
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(s2.Name); <span class="cmt">// Bekzod</span></code></pre>
+        <div class="info-box tip">
+          <strong>💡 Key Point</strong>
+          <p>
+            Static members belong to the class, not to instances. Use them for
+            shared data (counters, configuration) and for utility methods that
+            don't depend on instance state.
+          </p>
         </div>
 
-        <div class="warning-box">
-          <strong>Trap:</strong> Assigning one object variable to another does NOT copy the object —
-          both variables point to the same object in memory.
-          To copy, you need to create a new instance and copy properties manually, or use a pattern like <code>MemberwiseClone()</code>.
-        </div>
+        <!-- ──── 8. Value Types vs Reference Types ──── -->
+        <div class="theory-content">
+          <h3>8. Value Types vs Reference Types</h3>
 
-        <div class="code-block">
-          <div class="code-header"><span>Null reference</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="cls">Student</span> s = <span class="kw">null</span>;     <span class="cmt">// valid — s holds no object</span>
-s.Name = <span class="str">"Test"</span>;      <span class="cmt">// NullReferenceException at runtime!</span>
+          <p>
+            <strong>Classes are reference types.</strong> When you write
+            <code>Student s2 = s1;</code>, you copy the <em>reference</em> (memory address),
+            not the object. Both variables now point to the same data. Think of it like
+            sharing a Google Doc link — edits by either person appear for both.
+          </p>
 
-<span class="cmt">// Always check before using:</span>
-<span class="kw">if</span> (s != <span class="kw">null</span>)
-    <span class="cls">Console</span>.<span class="met">WriteLine</span>(s.Name);
+          <details>
+            <summary>Two variables, one object — the reference trap</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Assignment copies the reference</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cls">Student</span> <span class="vr">s1</span> = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Aisha"</span>, <span class="num">20</span>, <span class="str">"IT"</span>);
+<span class="cls">Student</span> <span class="vr">s2</span> = <span class="vr">s1</span>;  <span class="cmt">// same object, not a copy!</span>
+
+<span class="vr">s2</span>.<span class="vr">Name</span> = <span class="str">"Bekzod"</span>;
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">s1</span>.<span class="vr">Name</span>);  <span class="cmt">// Bekzod ← changed through s2!</span></code></pre>
+            </div>
+          </details>
+
+          <p>
+            A reference variable can also hold <code>null</code> — meaning "no object."
+            Accessing a member on a null reference throws <code>NullReferenceException</code>.
+            Use the <code>?.</code> operator for safe access.
+          </p>
+
+          <details>
+            <summary>Null references and safe access</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Null check patterns</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cls">Student</span> <span class="vr">s3</span> = <span class="kw">null</span>;
+<span class="cmt">// s3.Name = "Test";  // NullReferenceException!</span>
+
+<span class="kw2">if</span> (<span class="vr">s3</span> != <span class="kw">null</span>)
+    <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">s3</span>.<span class="vr">Name</span>);
 
 <span class="cmt">// Modern null-conditional operator:</span>
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(s?.Name ?? <span class="str">"(no student)"</span>);</code></pre>
-        </div>
-      </section>
-
-      <!-- COMPLETE EXAMPLE -->
-      <section class="section">
-        <h2>10. Complete Example — BankAccount</h2>
-        <p>Putting everything together: fields, properties, constructors, methods.</p>
-        <div class="code-block">
-          <div class="code-header"><span>BankAccount class</span><span class="code-lang">C#</span></div>
-          <pre><code><span class="cmt">// Program.cs</span>
-<span class="cls">BankAccount</span> acc1 = <span class="kw">new</span> <span class="cls">BankAccount</span>(<span class="str">"Dias"</span>, <span class="num">50000m</span>);
-<span class="cls">BankAccount</span> acc2 = <span class="kw">new</span> <span class="cls">BankAccount</span>(<span class="str">"Aisha"</span>);
-
-acc1.<span class="met">Deposit</span>(<span class="num">10000m</span>);
-acc1.<span class="met">Transfer</span>(acc2, <span class="num">5000m</span>);
-acc1.<span class="met">PrintStatement</span>();
-acc2.<span class="met">PrintStatement</span>();
-
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Total accounts: </span>{<span class="cls">BankAccount</span>.<span class="met">GetAccountCount</span>()}<span class="str">"</span>);
-
-<span class="cmt">// ─────────── class definition ───────────</span>
-<span class="kw">class</span> <span class="cls">BankAccount</span>
-{
-    <span class="kw">private static int</span>  _accountCount = <span class="num">0</span>;
-    <span class="kw">private decimal</span>     _balance;
-
-    <span class="kw">public string</span>  Owner         { <span class="kw">get</span>; }
-    <span class="kw">public string</span>  AccountNumber { <span class="kw">get</span>; }
-
-    <span class="kw">public decimal</span> Balance
-    {
-        <span class="kw">get</span> => _balance;
-        <span class="kw">private set</span>
-        {
-            <span class="kw">if</span> (value &lt; <span class="num">0</span>)
-                <span class="kw">throw new</span> <span class="cls">InvalidOperationException</span>(<span class="str">"Balance cannot go negative"</span>);
-            _balance = value;
-        }
-    }
-
-    <span class="kw">public</span> <span class="cls">BankAccount</span>(<span class="kw">string</span> owner, <span class="kw">decimal</span> initialDeposit = <span class="num">0</span>)
-    {
-        Owner         = owner;
-        Balance       = initialDeposit;
-        _accountCount++;
-        AccountNumber = <span class="str">$"ACC</span>{_accountCount:D4}<span class="str">"</span>;
-    }
-
-    <span class="kw">public void</span> <span class="met">Deposit</span>(<span class="kw">decimal</span> amount)
-    {
-        <span class="kw">if</span> (amount &lt;= <span class="num">0</span>) <span class="kw">throw new</span> <span class="cls">ArgumentException</span>(<span class="str">"Deposit must be positive"</span>);
-        Balance += amount;
-    }
-
-    <span class="kw">public void</span> <span class="met">Withdraw</span>(<span class="kw">decimal</span> amount)
-    {
-        <span class="kw">if</span> (amount &lt;= <span class="num">0</span>) <span class="kw">throw new</span> <span class="cls">ArgumentException</span>(<span class="str">"Amount must be positive"</span>);
-        Balance -= amount; <span class="cmt">// Balance setter guards against negative</span>
-    }
-
-    <span class="kw">public void</span> <span class="met">Transfer</span>(<span class="cls">BankAccount</span> target, <span class="kw">decimal</span> amount)
-    {
-        <span class="met">Withdraw</span>(amount);
-        target.<span class="met">Deposit</span>(amount);
-    }
-
-    <span class="kw">public void</span> <span class="met">PrintStatement</span>()
-        => <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"[</span>{AccountNumber}<span class="str">] </span>{Owner}<span class="str">: </span>{Balance:C}<span class="str">"</span>);
-
-    <span class="kw">public static int</span> <span class="met">GetAccountCount</span>() => _accountCount;
-}</code></pre>
-        </div>
-        <p><strong>Expected output:</strong></p>
-        <div class="code-block" style="margin-top:0">
-          <pre style="background:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:6px;"><code>[ACC0001] Dias: ₸55,000.00
-[ACC0002] Aisha: ₸5,000.00
-Total accounts: 2</code></pre>
-        </div>
-      </section>
-
-      <!-- INSTRUCTOR NOTES -->
-      <section class="section">
-        <h2>Instructor Notes</h2>
-        <div class="info-box">
-          <ul style="margin:0; padding-left:1.2rem;">
-            <li>Live-code the <code>Student</code> class from scratch — start with public fields,
-                then show the problem (invalid age), then convert to a property with validation.</li>
-            <li>Emphasise: <em>a class is a contract</em>. Once code outside the class calls methods,
-                the internal implementation can change without breaking callers — that's encapsulation in action.</li>
-            <li>The reference-type trap is a classic gotcha. Show it live: two variables, modify through one, observe the other changed.</li>
-            <li>Use the Car or BankAccount example to draw a memory diagram on the board:
-                stack holds the reference (address), heap holds the object.</li>
-            <li>Students often ask "when should I use a static method?" — answer:
-                when the method does not depend on the state of any particular instance.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- COMMON MISTAKES -->
-      <section class="section">
-        <h2>Common Mistakes</h2>
-        <div class="mistake-block">
-          <div class="mistake-title">Forgetting <code>new</code></div>
-          <div class="code-block">
-            <pre><code><span class="cls">Student</span> s; <span class="cmt">// declared but NOT created — s is null</span>
-s.Name = <span class="str">"Dias"</span>; <span class="cmt">// NullReferenceException</span>
-
-<span class="cmt">// Fix:</span>
-<span class="cls">Student</span> s = <span class="kw">new</span> <span class="cls">Student</span>();
-s.Name = <span class="str">"Dias"</span>;</code></pre>
-          </div>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="vr">s3</span>?.<span class="vr">Name</span> ?? <span class="str">"(no student)"</span>);</code></pre>
+            </div>
+          </details>
         </div>
 
-        <div class="mistake-block">
-          <div class="mistake-title">Making fields public instead of using properties</div>
-          <div class="code-block">
-            <pre><code><span class="cmt">// Bad — no protection</span>
-<span class="kw">public int</span> Age;
-
-<span class="cmt">// Good — controlled access</span>
-<span class="kw">public int</span> Age { <span class="kw">get</span>; <span class="kw">set</span>; }</code></pre>
-          </div>
-        </div>
-
-        <div class="mistake-block">
-          <div class="mistake-title">Calling a static member on an instance</div>
-          <div class="code-block">
-            <pre><code><span class="cls">Counter</span> c = <span class="kw">new</span> <span class="cls">Counter</span>();
-c.<span class="met">GetTotal</span>();         <span class="cmt">// ERROR — GetTotal is static</span>
-<span class="cls">Counter</span>.<span class="met">GetTotal</span>();   <span class="cmt">// Correct</span></code></pre>
-          </div>
-        </div>
-
-        <div class="mistake-block">
-          <div class="mistake-title">Confusing assignment with copying</div>
-          <div class="code-block">
-            <pre><code><span class="cls">Student</span> original = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Aisha"</span>, <span class="num">20</span>, <span class="str">"IT"</span>);
-<span class="cls">Student</span> copy = original; <span class="cmt">// NOT a copy — same object!</span>
-copy.Name = <span class="str">"Bekzod"</span>;
-<span class="cls">Console</span>.<span class="met">WriteLine</span>(original.Name); <span class="cmt">// Bekzod — original changed too!</span></code></pre>
-          </div>
-        </div>
-      </section>
-
-      <!-- PRACTICE -->
-      <section class="section">
-        <h2>Practice Tasks</h2>
-
-        <div class="task-card">
-          <div class="task-header">
-            <span class="task-title">Task A — Library Book</span>
-            <span class="difficulty easy">Easy</span>
-          </div>
-          <p>Create a <code>Book</code> class with properties: <code>Title</code>, <code>Author</code>,
-          <code>Year</code>, <code>IsAvailable</code> (default <code>true</code>).</p>
-          <p>Add methods: <code>Borrow()</code> — sets IsAvailable to false (throws if already borrowed);
-          <code>Return()</code> — sets it back to true; <code>PrintInfo()</code>.</p>
-          <p>Create 3 books, borrow 2 of them, print all.</p>
-        </div>
-
-        <div class="task-card">
-          <div class="task-header">
-            <span class="task-title">Task B — Temperature Converter</span>
-            <span class="difficulty medium">Medium</span>
-          </div>
-          <p>Create a <code>Temperature</code> class that stores a value in Celsius.</p>
-          <p>Add computed properties: <code>Fahrenheit</code>, <code>Kelvin</code>.
-          Add a static method <code>FromFahrenheit(double f)</code> that returns a new <code>Temperature</code>.</p>
-          <p>Print a conversion table for –40°C to 100°C in steps of 20.</p>
-        </div>
-
-        <div class="task-card">
-          <div class="task-header">
-            <span class="task-title">Task C — Shopping Cart</span>
-            <span class="difficulty hard">Hard</span>
-          </div>
-          <p>Create a <code>Product</code> class (<code>Name</code>, <code>Price</code>, <code>Category</code>)
-          and a <code>Cart</code> class.</p>
-          <p>The <code>Cart</code> holds up to 10 products in an array. Methods: <code>AddItem(Product)</code>,
-          <code>RemoveItem(string name)</code>, <code>GetTotal()</code>, <code>PrintReceipt()</code>.</p>
-          <p>Add a discount: if total &gt; 10 000, apply 10% discount. Show original and discounted price.</p>
-        </div>
-      </section>
-
-      <!-- ASSIGNMENTS -->
-      <section class="section">
-        <h2>Assignments</h2>
-        <div class="assignment-block">
-          <div class="assignment-header">
-            <span class="assignment-title">Task 5 — Student Registry</span>
-            <span class="points-badge">10 pts</span>
-          </div>
+        <div class="info-box important">
+          <strong>💡 Key Point</strong>
           <p>
-            Create a console application with a <code>Student</code> class and a <code>Registry</code> class:
+            Assigning one object variable to another copies the <em>reference</em>, not the
+            object. Both variables point to the same data. This is the #1 source of
+            unexpected behaviour for OOP beginners.
           </p>
+        </div>
+
+        <!-- ──── 9. Complete Example ──── -->
+        <div class="theory-content">
+          <h3>9. Putting It All Together — Complete BankAccount</h3>
+
+          <p>
+            This final example combines every concept from today into a single class.
+            Think of it like a real bank teller counter — you can't reach behind the
+            counter and change the ledger; you must ask the teller (call a method), and the
+            teller will refuse invalid requests.
+          </p>
+
+          <p>
+            Notice the design decisions: <code>Balance</code> has a <code>private set</code>
+            that rejects negative values. <code>Owner</code> and <code>AccountNumber</code>
+            are read-only. The <code>_accountCount</code> is static because it tracks
+            <em>all</em> accounts, not one account.
+          </p>
+
+          <details>
+            <summary>Step 1 — Fields, properties, and constructor</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — BankAccount skeleton</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="kw">class</span> <span class="cls">BankAccount</span>
+<span class="pun">{</span>
+    <span class="kw">private</span> <span class="kw">static</span> <span class="kw">int</span> <span class="vr">_accountCount</span> = <span class="num">0</span>;
+    <span class="kw">private</span> <span class="kw">decimal</span> <span class="vr">_balance</span>;
+
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">Owner</span>         <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">string</span> <span class="vr">AccountNumber</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">decimal</span> <span class="vr">Balance</span>
+    <span class="pun">{</span>
+        <span class="kw">get</span> <span class="pun">=></span> <span class="vr">_balance</span>;
+        <span class="kw">private</span> <span class="kw">set</span>
+        <span class="pun">{</span>
+            <span class="kw2">if</span> (<span class="vr">value</span> &lt; <span class="num">0</span>)
+                <span class="kw2">throw</span> <span class="kw">new</span> <span class="cls">InvalidOperationException</span>(<span class="str">"Balance cannot go negative"</span>);
+            <span class="vr">_balance</span> = <span class="vr">value</span>;
+        <span class="pun">}</span>
+    <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="cls">BankAccount</span>(<span class="kw">string</span> <span class="vr">owner</span>, <span class="kw">decimal</span> <span class="vr">initialDeposit</span> = <span class="num">0</span>)
+    <span class="pun">{</span>
+        <span class="vr">Owner</span>   = <span class="vr">owner</span>;
+        <span class="vr">Balance</span> = <span class="vr">initialDeposit</span>;
+        <span class="vr">_accountCount</span>++;
+        <span class="vr">AccountNumber</span> = <span class="str">$"ACC{_accountCount:D4}"</span>;
+    <span class="pun">}</span>
+<span class="pun">}</span></code></pre>
+            </div>
+          </details>
+
+          <details>
+            <summary>Step 2 — Methods: Deposit, Withdraw, Transfer</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Adding behaviour to BankAccount</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cmt">// Inside the BankAccount class:</span>
+<span class="kw">public</span> <span class="kw">void</span> <span class="met">Deposit</span>(<span class="kw">decimal</span> <span class="vr">amount</span>)
+<span class="pun">{</span>
+    <span class="kw2">if</span> (<span class="vr">amount</span> &lt;= <span class="num">0</span>) <span class="kw2">throw</span> <span class="kw">new</span> <span class="cls">ArgumentException</span>(<span class="str">"Deposit must be positive"</span>);
+    <span class="vr">Balance</span> += <span class="vr">amount</span>;
+<span class="pun">}</span>
+
+<span class="kw">public</span> <span class="kw">void</span> <span class="met">Withdraw</span>(<span class="kw">decimal</span> <span class="vr">amount</span>)
+<span class="pun">{</span>
+    <span class="kw2">if</span> (<span class="vr">amount</span> &lt;= <span class="num">0</span>) <span class="kw2">throw</span> <span class="kw">new</span> <span class="cls">ArgumentException</span>(<span class="str">"Amount must be positive"</span>);
+    <span class="vr">Balance</span> -= <span class="vr">amount</span>;  <span class="cmt">// setter guards against negative</span>
+<span class="pun">}</span>
+
+<span class="kw">public</span> <span class="kw">void</span> <span class="met">Transfer</span>(<span class="cls">BankAccount</span> <span class="vr">target</span>, <span class="kw">decimal</span> <span class="vr">amount</span>)
+<span class="pun">{</span>
+    <span class="met">Withdraw</span>(<span class="vr">amount</span>);
+    <span class="vr">target</span>.<span class="met">Deposit</span>(<span class="vr">amount</span>);
+<span class="pun">}</span>
+
+<span class="kw">public</span> <span class="kw">void</span> <span class="met">PrintStatement</span>()
+    <span class="pun">=></span> <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"[{AccountNumber}] {Owner}: {Balance:C}"</span>);
+
+<span class="kw">public</span> <span class="kw">static</span> <span class="kw">int</span> <span class="met">GetAccountCount</span>() <span class="pun">=></span> <span class="vr">_accountCount</span>;</code></pre>
+            </div>
+          </details>
+
+          <details>
+            <summary>Step 3 — Using BankAccount from top-level code</summary>
+            <div class="code-block">
+              <div class="code-block-header">
+                <span class="code-lang">C# — Putting the BankAccount to work</span>
+                <span class="code-filename">Program.cs</span>
+              </div>
+              <pre><code><span class="cls">BankAccount</span> <span class="vr">acc1</span> = <span class="kw">new</span> <span class="cls">BankAccount</span>(<span class="str">"Dias"</span>, <span class="num">50000m</span>);
+<span class="cls">BankAccount</span> <span class="vr">acc2</span> = <span class="kw">new</span> <span class="cls">BankAccount</span>(<span class="str">"Aisha"</span>);
+
+<span class="vr">acc1</span>.<span class="met">Deposit</span>(<span class="num">10000m</span>);
+<span class="vr">acc1</span>.<span class="met">Transfer</span>(<span class="vr">acc2</span>, <span class="num">5000m</span>);
+<span class="vr">acc1</span>.<span class="met">PrintStatement</span>();   <span class="cmt">// [ACC0001] Dias: $55,000.00</span>
+<span class="vr">acc2</span>.<span class="met">PrintStatement</span>();   <span class="cmt">// [ACC0002] Aisha: $5,000.00</span>
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"Total accounts: {BankAccount.GetAccountCount()}"</span>);  <span class="cmt">// 2</span></code></pre>
+            </div>
+          </details>
+        </div>
+
+        <div class="info-box tip">
+          <strong>💡 Key Point</strong>
+          <p>
+            Good OOP design encapsulates data and behaviour together, validates state in
+            properties and constructors, and hides implementation details behind a clean
+            public interface.
+          </p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ EXAMPLES ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-examples"><span class="section-icon">💻</span> Code Examples</h2>
+
+        <div class="theory-content">
+          <h3>Example A — Temperature Converter with Static Factory</h3>
+          <p>
+            This class demonstrates computed properties, a parameterised constructor with
+            validation, and a <code>static</code> factory method that returns a new instance.
+          </p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Temperature class</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cls">Temperature</span> <span class="vr">boiling</span> = <span class="kw">new</span> <span class="cls">Temperature</span>(<span class="num">100</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{boiling.Celsius}°C = {boiling.Fahrenheit}°F = {boiling.Kelvin}K"</span>);
+<span class="cmt">// 100°C = 212°F = 373.15K</span>
+
+<span class="cls">Temperature</span> <span class="vr">bodyTemp</span> = <span class="cls">Temperature</span>.<span class="met">FromFahrenheit</span>(<span class="num">98.6</span>);
+<span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{bodyTemp.Celsius:F1}°C"</span>);  <span class="cmt">// 37.0°C</span>
+
+<span class="kw">class</span> <span class="cls">Temperature</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">Celsius</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>
+
+    <span class="cmt">// Computed properties — not stored, derived</span>
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">Fahrenheit</span> <span class="pun">=></span> <span class="vr">Celsius</span> * <span class="num">9.0</span> / <span class="num">5</span> + <span class="num">32</span>;
+    <span class="kw">public</span> <span class="kw">double</span> <span class="vr">Kelvin</span>     <span class="pun">=></span> <span class="vr">Celsius</span> + <span class="num">273.15</span>;
+
+    <span class="kw">public</span> <span class="cls">Temperature</span>(<span class="kw">double</span> <span class="vr">celsius</span>)
+    <span class="pun">{</span>
+        <span class="kw2">if</span> (<span class="vr">celsius</span> &lt; <span class="num">-273.15</span>)
+            <span class="kw2">throw</span> <span class="kw">new</span> <span class="cls">ArgumentException</span>(<span class="str">"Below absolute zero"</span>);
+        <span class="vr">Celsius</span> = <span class="vr">celsius</span>;
+    <span class="pun">}</span>
+
+    <span class="cmt">// Static factory method — alternative way to create a Temperature</span>
+    <span class="kw">public</span> <span class="kw">static</span> <span class="cls">Temperature</span> <span class="met">FromFahrenheit</span>(<span class="kw">double</span> <span class="vr">f</span>)
+        <span class="pun">=></span> <span class="kw">new</span> <span class="cls">Temperature</span>((<span class="vr">f</span> - <span class="num">32</span>) * <span class="num">5</span> / <span class="num">9</span>);
+<span class="pun">}</span></code></pre>
+        </div>
+
+        <div class="theory-content">
+          <h3>Example B — Inventory Item with Private Set</h3>
+          <p>
+            This class shows how <code>private set</code> forces callers to use methods
+            instead of directly modifying data. You can't just set
+            <code>item.Quantity = 999</code> — you have to go through
+            <code>Restock()</code> or <code>Sell()</code>, which enforce business rules.
+          </p>
+        </div>
+
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-lang">C# — Inventory item</span>
+            <span class="code-filename">Program.cs</span>
+          </div>
+          <pre><code><span class="cls">InventoryItem</span> <span class="vr">item</span> = <span class="kw">new</span> <span class="cls">InventoryItem</span>(<span class="str">"Widget"</span>, <span class="num">9.99m</span>, <span class="num">50</span>);
+<span class="vr">item</span>.<span class="met">Sell</span>(<span class="num">3</span>);
+<span class="vr">item</span>.<span class="met">Restock</span>(<span class="num">20</span>);
+<span class="vr">item</span>.<span class="met">Print</span>();  <span class="cmt">// Widget — $9.99, qty: 67</span>
+
+<span class="kw">class</span> <span class="cls">InventoryItem</span>
+<span class="pun">{</span>
+    <span class="kw">public</span> <span class="kw">string</span>  <span class="vr">Name</span>     <span class="pun">{</span> <span class="kw">get</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">decimal</span> <span class="vr">Price</span>    <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">set</span>; <span class="pun">}</span>
+    <span class="kw">public</span> <span class="kw">int</span>     <span class="vr">Quantity</span> <span class="pun">{</span> <span class="kw">get</span>; <span class="kw">private</span> <span class="kw">set</span>; <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="cls">InventoryItem</span>(<span class="kw">string</span> <span class="vr">name</span>, <span class="kw">decimal</span> <span class="vr">price</span>, <span class="kw">int</span> <span class="vr">qty</span>)
+    <span class="pun">{</span>
+        <span class="vr">Name</span>     = <span class="vr">name</span>;
+        <span class="vr">Price</span>    = <span class="vr">price</span>;
+        <span class="vr">Quantity</span> = <span class="vr">qty</span>;
+    <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Sell</span>(<span class="kw">int</span> <span class="vr">count</span>)
+    <span class="pun">{</span>
+        <span class="kw2">if</span> (<span class="vr">count</span> > <span class="vr">Quantity</span>)
+            <span class="kw2">throw</span> <span class="kw">new</span> <span class="cls">InvalidOperationException</span>(<span class="str">"Not enough stock"</span>);
+        <span class="vr">Quantity</span> -= <span class="vr">count</span>;
+    <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Restock</span>(<span class="kw">int</span> <span class="vr">count</span>)
+    <span class="pun">{</span>
+        <span class="kw2">if</span> (<span class="vr">count</span> &lt;= <span class="num">0</span>) <span class="kw2">throw</span> <span class="kw">new</span> <span class="cls">ArgumentException</span>(<span class="str">"Must restock positive amount"</span>);
+        <span class="vr">Quantity</span> += <span class="vr">count</span>;
+    <span class="pun">}</span>
+
+    <span class="kw">public</span> <span class="kw">void</span> <span class="met">Print</span>()
+        <span class="pun">=></span> <span class="cls">Console</span>.<span class="met">WriteLine</span>(<span class="str">$"{Name} — {Price:C}, qty: {Quantity}"</span>);
+<span class="pun">}</span></code></pre>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ PRACTICE ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-practice"><span class="section-icon">✏️</span> Practice Tasks</h2>
+
+        <div class="task-list">
+
+          <!-- Easy 1 -->
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 1</span>
+              <span class="task-title">Library Book</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Create a <code>Book</code> class with properties: <code>Title</code> (string),
+                <code>Author</code> (string), <code>Year</code> (int),
+                <code>IsAvailable</code> (bool, default <code>true</code>).
+              </p>
+              <ul>
+                <li>Add a constructor that takes title, author, and year.</li>
+                <li>Add a <code>Borrow()</code> method that sets IsAvailable to false (print an error if already borrowed).</li>
+                <li>Add a <code>Return()</code> method that sets it back to true.</li>
+                <li>Add a <code>PrintInfo()</code> method that prints all details.</li>
+                <li>In the main program, create 3 books, borrow 2, and print all 3.</li>
+              </ul>
+              <details>
+                <summary>💡 Hint</summary>
+                <p>Use a parameterised constructor. <code>IsAvailable</code> should default to <code>true</code> in the constructor. In <code>Borrow()</code>, check <code>if (!IsAvailable)</code> first.</p>
+              </details>
+            </div>
+          </div>
+
+          <!-- Easy 2 -->
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 2</span>
+              <span class="task-title">Simple Counter</span>
+              <span class="difficulty easy">Easy</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Create a <code>Counter</code> class with a private <code>_count</code> field
+                (default 0). Add methods: <code>Increment()</code>, <code>Decrement()</code>
+                (cannot go below 0), <code>Reset()</code>, and a read-only property
+                <code>Value</code>.
+              </p>
+              <ul>
+                <li>The constructor accepts an optional starting value (default 0).</li>
+                <li>Demonstrate: create a counter at 5, increment twice, decrement once, print the result (6).</li>
+              </ul>
+              <details>
+                <summary>💡 Hint</summary>
+                <p>The <code>Value</code> property only needs a <code>get</code> that returns <code>_count</code>. In <code>Decrement()</code>, use <code>Math.Max(0, _count - 1)</code> or an <code>if</code> check.</p>
+              </details>
+            </div>
+          </div>
+
+          <!-- Medium 1 -->
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 3</span>
+              <span class="task-title">Temperature Converter</span>
+              <span class="difficulty medium">Medium</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Create a <code>Temperature</code> class that stores a value in Celsius.
+              </p>
+              <ul>
+                <li>Add computed properties <code>Fahrenheit</code> and <code>Kelvin</code>.</li>
+                <li>Validate that Celsius is not below –273.15 (absolute zero).</li>
+                <li>Add a static method <code>FromFahrenheit(double f)</code> that returns a new <code>Temperature</code>.</li>
+                <li>Print a conversion table for –40°C to 100°C in steps of 20.</li>
+              </ul>
+              <details>
+                <summary>💡 Hint</summary>
+                <p>Formulas: F = C × 9/5 + 32, K = C + 273.15. The static method creates a new Temperature using the inverse formula: C = (F – 32) × 5/9.</p>
+              </details>
+            </div>
+          </div>
+
+          <!-- Medium 2 -->
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 4</span>
+              <span class="task-title">Grade Tracker</span>
+              <span class="difficulty medium">Medium</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Create a <code>GradeTracker</code> class that stores a student's name and an
+                array of up to 20 grades (doubles). Implement:
+              </p>
+              <ul>
+                <li><code>AddGrade(double grade)</code> — validates 0–100, adds to array.</li>
+                <li><code>Average</code> — computed property returning the average.</li>
+                <li><code>Highest</code> / <code>Lowest</code> — computed properties.</li>
+                <li><code>PrintReport()</code> — prints name, all grades, average, highest, lowest.</li>
+                <li>Use a private <code>_count</code> field to track how many grades have been added.</li>
+              </ul>
+              <details>
+                <summary>💡 Hint</summary>
+                <p>Declare <code>double[] _grades = new double[20];</code> and <code>int _count = 0;</code> as private fields. In <code>AddGrade</code>, store at <code>_grades[_count]</code> and increment <code>_count</code>. For Average, sum the first <code>_count</code> elements and divide.</p>
+              </details>
+            </div>
+          </div>
+
+          <!-- Hard 1 -->
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 5</span>
+              <span class="task-title">Shopping Cart</span>
+              <span class="difficulty hard">Hard</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Design two classes: <code>Product</code> (Name, Price, Category) and
+                <code>Cart</code> (holds up to 10 products in an array).
+              </p>
+              <ul>
+                <li><code>Cart.AddItem(Product)</code> — adds a product (error if full).</li>
+                <li><code>Cart.RemoveItem(string name)</code> — removes the first matching product.</li>
+                <li><code>Cart.GetTotal()</code> — returns the sum of all prices.</li>
+                <li><code>Cart.PrintReceipt()</code> — lists all items, subtotal, discount, and final total.</li>
+                <li><strong>Discount rule:</strong> if subtotal > 10,000, apply 10% off.</li>
+                <li>You must decide: which properties should be read-only? Should Cart expose its internal array? How do you handle removal (shift elements, or use null gaps)?</li>
+              </ul>
+              <details>
+                <summary>💡 Hint</summary>
+                <p>Keep the Product array private. Use a <code>_count</code> field. For removal, find the index, shift subsequent elements left by one, and decrement <code>_count</code>. Make Product properties read-only (set only via constructor) to prevent price tampering after adding to cart.</p>
+              </details>
+            </div>
+          </div>
+
+          <!-- Hard 2 -->
+          <div class="task-card">
+            <div class="task-header">
+              <span class="task-num">Task 6</span>
+              <span class="task-title">Vehicle Fleet Manager</span>
+              <span class="difficulty hard">Hard</span>
+            </div>
+            <div class="task-body">
+              <p>
+                Design a <code>Vehicle</code> class (Make, Model, Year, Mileage) and a
+                <code>Fleet</code> class that manages up to 20 vehicles.
+              </p>
+              <ul>
+                <li>Vehicle: Make and Year are immutable. Mileage can only increase (via a <code>Drive(int km)</code> method). Add a computed property <code>Age</code>.</li>
+                <li>Fleet: <code>Add(Vehicle)</code>, <code>FindByMake(string)</code> (returns all matches), <code>GetOldest()</code>, <code>GetTotalMileage()</code>, <code>PrintAll()</code>.</li>
+                <li><strong>Design decisions you must make:</strong> How do you prevent mileage rollback? Should Fleet return Vehicle references or copies? How does <code>FindByMake</code> return multiple results without List (use an array)?</li>
+              </ul>
+              <details>
+                <summary>💡 Hint</summary>
+                <p>Make Mileage have <code>private set</code> and only modify it in Drive(). For FindByMake, first count matches, then create a correctly-sized array and fill it. Vehicle's Year should use <code>{ get; }</code> (read-only auto-property) set in the constructor.</p>
+              </details>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ MISTAKES ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-mistakes"><span class="section-icon">⚠️</span> Common Mistakes</h2>
+
+        <div class="mistakes-list">
+
+          <div class="mistake-item">
+            <div class="mistake-title">Forgetting <code>new</code> — using a null reference</div>
+            <div class="mistake-desc">
+              Writing <code>Student s;</code> declares a variable but creates no object — <code>s</code>
+              is <code>null</code>. Calling <code>s.Name</code> throws a
+              <code>NullReferenceException</code>.
+              Fix: always write <code>Student s = new Student();</code>.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Using public fields instead of properties</div>
+            <div class="mistake-desc">
+              <code>public int Age;</code> (a field) looks similar to
+              <code>public int Age { get; set; }</code> (a property), but the field has no
+              validation, no <code>private set</code>, and cannot be made <code>init</code>-only
+              later. Always use properties.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Confusing assignment with copying</div>
+            <div class="mistake-desc">
+              <code>Student copy = original;</code> does NOT create a new object — both variables
+              point to the same instance. Changing <code>copy.Name</code> also changes
+              <code>original.Name</code>. To truly copy, create a new object and copy each property.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Calling a static member on an instance</div>
+            <div class="mistake-desc">
+              Writing <code>myCounter.GetTotal()</code> when <code>GetTotal()</code> is static
+              causes a compile error. Static members are accessed via the class name:
+              <code>Counter.GetTotal()</code>.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Expecting a default constructor after writing a parameterised one</div>
+            <div class="mistake-desc">
+              If you define <code>public Student(string name) { ... }</code>, the auto-generated
+              parameterless constructor disappears. Writing <code>new Student()</code> now fails.
+              If you need both, explicitly add <code>public Student() { }</code>.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">Primary constructor parameters not assigned to properties</div>
+            <div class="mistake-desc">
+              In <code>class Person(string name)</code>, the parameter <code>name</code> exists
+              but is not automatically a property. You must write
+              <code>public string Name { get; } = name;</code> to expose it. Without this,
+              outside code cannot access the value.
+            </div>
+          </div>
+
+          <div class="mistake-item">
+            <div class="mistake-title">No validation in constructors or setters</div>
+            <div class="mistake-desc">
+              Allowing <code>new BankAccount("", -5000)</code> without checking produces invalid
+              objects that break later. Validate early: check for null/empty strings and negative
+              values in the constructor or property setter.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ INSTRUCTOR ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-instructor"><span class="section-icon">🎓</span> Instructor Notes</h2>
+        <div class="instructor-box">
+          <div class="instructor-label">⚡ Teaching tips for this lesson</div>
           <ul>
-            <li><strong>Student:</strong> <code>Name</code>, <code>StudentId</code>, <code>GPA</code> (0.0–4.0, validated),
-                <code>Faculty</code>. Constructor sets Id automatically (static counter).</li>
-            <li><strong>Registry:</strong> stores up to 100 students in an array. Methods:
-                <code>Add(Student)</code>, <code>FindById(string)</code>, <code>FindByName(string)</code>,
-                <code>GetTopStudents(int n)</code> (sorted by GPA desc), <code>PrintAll()</code>.</li>
-            <li>Main program: menu loop — Add student / Find / Print top N / Show all / Exit.</li>
+            <li>
+              <strong>Time allocation (80 min):</strong>
+              Intro + OOP motivation: 8 min &middot;
+              Classes/Objects theory: 10 min &middot;
+              Live-code BankAccount from scratch: 15 min &middot;
+              Properties + access modifiers: 12 min &middot;
+              Constructors + this: 10 min &middot;
+              Static members + reference types: 10 min &middot;
+              Student practice (Tasks 1–2 in pairs): 10 min &middot;
+              Wrap-up + assignment intro: 5 min.
+            </li>
+            <li>
+              <strong>Start with the analogy before touching any code.</strong>
+              Draw a cookie cutter on the board. Ask: "If I change the sprinkles on this cookie,
+              does this other cookie change?" Wait for them to answer. This mental model must be
+              solid before a single line of C# appears, otherwise the syntax won't stick.
+            </li>
+            <li>
+              <strong>The live-code BankAccount is the centrepiece — do it in stages.</strong>
+              Start with public fields only. Create an account, then ask a student:
+              "Set the balance to negative one million. What happens?" They'll do it and realise
+              nothing prevents it. Now refactor to a property with validation, live. Show the
+              before and after. This narrative arc is far more powerful than showing final code.
+            </li>
+            <li>
+              <strong>Deliberately make a typo</strong> when typing the constructor. Forget a semicolon
+              or misspell a property name. Let the red squiggle appear, read the error aloud, fix
+              it calmly. This normalises mistakes and keeps your students relaxed. Many of them are
+              terrified of compiler errors; seeing you make one and fix it casually says "this is
+              normal."
+            </li>
+            <li>
+              <strong>The reference-type trap will cause confusion.</strong> You must demo it live:
+              create one Student, assign to two variables, change through one, observe the other
+              changed. Draw a memory diagram on the board with boxes for "stack" and "heap."
+              Ask: "How many Student objects are in memory right now?" — the answer is one.
+            </li>
+            <li>
+              <strong>Static members confuse beginners.</strong> When someone asks "when should I use
+              static?" answer: "When the data or method does not depend on any particular object's
+              state. A running count of all students? Static. One student's GPA? Not static."
+            </li>
+            <li>
+              <strong>Discussion questions to throw at the class when it goes quiet:</strong>
+              "If I make an Age property and someone sets it to –50, whose fault is that — the
+              class designer or the caller?" &middot;
+              "Can I create 1,000 Car objects from one Car class without writing new code?" &middot;
+              "Why would I ever make something private when public is more flexible?"
+            </li>
+            <li>
+              <strong>If you're running behind,</strong> cut the static constructor example and the
+              fluent interface pattern — those are nice-to-know, not essential. Constructor chaining
+              will eat 5+ minutes if you're not careful; cut the Rectangle example if time is tight.
+            </li>
+            <li>
+              <strong>Hands-on pause:</strong> After the main theory, stop and let your students work
+              on Task 1 (Library Book) in pairs for 8–10 minutes. Walk around and listen — you'll
+              hear real confusion you can address live. When you regroup, ask a pair to share their
+              solution and discuss design choices.
+            </li>
           </ul>
-          <p><strong>Grading criteria:</strong> Encapsulation (private fields) · Property validation · Constructor logic · Method correctness · Clean output</p>
         </div>
-      </section>
+      </div>
 
-      <!-- HOMEWORK -->
-      <section class="section">
-        <h2>Homework</h2>
-        <div class="info-box">
-          <strong>Reading:</strong> Review C# auto-properties vs full properties — when would you choose each?
-          Think of one real-world entity (e.g., Order, Flight, Employee) and sketch its properties,
-          constructor, and 2–3 methods before next class.
+      <!-- ═══════════════════════════════════════ ASSIGNMENTS ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-assignments"><span class="section-icon">📋</span> Assignment</h2>
+        <div class="assignment-block">
+          <div>
+            <div class="assignment-name">Task 5 — Student Registry</div>
+            <div class="assignment-desc">
+              Create a <code>Student</code> class (Name, StudentId auto-generated, GPA validated
+              0.0–4.0, Faculty) and a <code>Registry</code> class (array of up to 100 students).
+              Registry methods: Add, FindById, FindByName, GetTopStudents(n), PrintAll.
+              Main program: interactive menu loop. Due next Friday.
+            </div>
+          </div>
+          <div class="points-badge">10 pts</div>
         </div>
-      </section>
+      </div>
 
-      <!-- NAVIGATION -->
+      <!-- ═══════════════════════════════════════ SUMMARY ═══════════════════════════════════════ -->
+      <div class="lesson-section">
+        <h2 class="section-title s-theory"><span class="section-icon">📖</span> Lesson Summary</h2>
+        <div class="theory-content">
+          <ul>
+            <li><strong>OOP</strong> bundles data (properties) and behaviour (methods) into objects, making code safer and scalable.</li>
+            <li>A <strong>class</strong> is a blueprint; an <strong>object</strong> is an instance created with <code>new</code>.</li>
+            <li>Use <strong>properties</strong> (auto, validated, init-only, computed) instead of public fields.</li>
+            <li><strong>Access modifiers</strong> (<code>private</code>, <code>public</code>) enforce encapsulation.</li>
+            <li><strong>Constructors</strong> guarantee valid initial state. Chain with <code>: this()</code>.</li>
+            <li><strong>Static members</strong> belong to the class, not instances — use for shared data.</li>
+            <li><strong>Reference types:</strong> assigning one object variable to another copies the reference, not the object.</li>
+          </ul>
+          <h3>What's Next</h3>
+          <p>
+            In L11 you will learn <strong>inheritance</strong> — how a <code>Dog</code> class can
+            extend an <code>Animal</code> class to reuse shared behaviour — and
+            <strong>interfaces</strong>, which define contracts that multiple unrelated classes can
+            fulfil. These concepts take OOP from "I can organise code into objects" to "I can build
+            complex, scalable systems where objects collaborate."
+          </p>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ NAV ═══════════════════════════════════════ -->
       <div class="lesson-nav">
-        <a href="l09.html" class="btn-nav btn-prev">&larr; L09 — Tasks Review</a>
-        <a href="l11.html" class="btn-nav btn-next">L11 — OOP Part 2 &rarr;</a>
+        <a href="l09.html" class="nav-btn">
+          <div>
+            <span class="nav-btn-label">← Previous</span>
+            <span class="nav-btn-title">L09 — Tasks Review + Q&amp;A</span>
+          </div>
+        </a>
+        <a href="l11.html" class="nav-btn">
+          <div>
+            <span class="nav-btn-label">Next lesson →</span>
+            <span class="nav-btn-title">L11 — OOP pt.2: Inheritance &amp; Interfaces</span>
+          </div>
+        </a>
       </div>
 
     </div>
